@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="codemodel-2.6">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/libs/codemodel-2.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/commons-lang-2.6.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-annotations-2.12.0-rc2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-core-2.12.0-rc2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/jackson-databind-2.12.0-rc2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

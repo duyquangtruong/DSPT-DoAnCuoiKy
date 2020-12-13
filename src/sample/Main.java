@@ -1,5 +1,6 @@
 package sample;
 
+import Generator.GenerateClassFile;
 import main.jdbc.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,6 +20,11 @@ public class Main {
     static Connection connection;
     static Statement  st = null;
     public static void main(String[] args) throws SQLException, ClassNotFoundException, ParserConfigurationException {
+        System.out.println("Reading Json File...");
+        GenerateClassFile Generator = new GenerateClassFile();
+        Generator.Generate("./src/Generator/input/input.json","GeneraClassFile","com.Generator");
+        System.out.println("Generate completed");
+
         System.out.println("Get connection ... ");
         config();
         // Lấy ra đối tượng Connection kết nối vào database.
