@@ -1,4 +1,4 @@
-package Table;
+package TableT.Table;
 
 import Annotation.Column.ForeignKey;
 import Annotation.Column.ColumnDB;
@@ -7,10 +7,9 @@ import Annotation.Column.Required;
 import Annotation.HasOne;
 import Annotation.HasMany;
 import Annotation.TableDB;
-import DataTypeMapper.DataTypeMapper;
-import DataTypeMapper.SQLDataTypeMapper;
+import TableT.DataTypeMapper.DataTypeMapper;
+import TableT.DataTypeMapper.SQLDataTypeMapper;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;

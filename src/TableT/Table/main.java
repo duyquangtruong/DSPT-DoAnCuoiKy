@@ -1,4 +1,4 @@
-package Table;
+package TableT.Table;
 
 public class main {
     public static void main(String[] args) throws Exception {

@@ -1,4 +1,4 @@
-package Table;
+package TableT.Table;
 
 import Annotation.Column.ColumnDB;
 import Annotation.Column.ForeignKey;
