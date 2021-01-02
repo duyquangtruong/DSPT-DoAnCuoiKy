@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ConfigDB>
+    <DBInfo type="permanent">
+        <DBName>Seagull</DBName>
+        <url>3674</url>
+        <username>34</username>
+        <password>34</password>
+    </DBInfo>
+</ConfigDB>
