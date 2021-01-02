@@ -1,4 +1,4 @@
-package DataTypeMapper;
+package TableT.DataTypeMapper;
 
 import java.util.HashMap;
 import java.util.Map;

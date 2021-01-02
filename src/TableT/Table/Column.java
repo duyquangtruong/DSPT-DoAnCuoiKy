@@ -1,4 +1,4 @@
-package Table;
+package TableT.Table;
 
 public class Column {
     private String columnName;
