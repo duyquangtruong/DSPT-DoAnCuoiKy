@@ -28,6 +28,7 @@ public abstract class DomainObj {
     private <T> void loadFromDB(){
         if(!isLoaded()){
             // Goi Session goi Table<T> load data tu Domain object nay
+
             setStatusLoaded();
         }
     }

@@ -9,6 +9,7 @@ public class ConnectionUtils {
     PreparedStatement ps = null;
     Statement statement = null;
     ResultSet rs = null;
+
     public void open(String connectionConfig) {
         try {
             //registering the jdbc driver here, your string to use
