@@ -10,7 +10,7 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class DBMapper {
+public class DBMapper {
 
     public static final String COL_DESC_PK_NAME = "PK_NAME";
     public static final String COL_DESC_FKCOLUMN_NAME = "FKCOLUMN_NAME";
@@ -21,12 +21,12 @@ public abstract class DBMapper {
     public static final String FOREIGN_INFO_KEY_TABLE = "Table";
     public static final String FOREIGN_INFO_KEY_COLUMN = "Column";
 
-    Session session = null;
-    DatabaseMetaData databaseMetaData = null;
-    ResultSet allTablesMetadatas = null;
+    private Session session = null;
+    private DatabaseMetaData databaseMetaData = null;
+    private ResultSet allTablesMetadatas = null;
 
-    public DBMapper() {
-        session = Session.getSession();
+    public DBMapper(Session sessionToMap) {
+        session = sessionToMap;
         try {
             databaseMetaData = session.getConn().getDbConnection().getMetaData();
 

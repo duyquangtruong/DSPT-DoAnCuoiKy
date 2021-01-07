@@ -1,5 +1,7 @@
 package Generator.DBContext;
 
+import main.jdbc.Session;
+
 public abstract class DomainObj {
     enum status {Ghost, Loaded}
     private status objStatus;
@@ -27,7 +29,8 @@ public abstract class DomainObj {
 
     private <T> void loadFromDB(){
         if(!isLoaded()){
-            // Goi Session goi Table<T> load data tu Domain object nay
+            Session session = Session.getSession();
+            // Goi query tu session de lay du lieu
 
             setStatusLoaded();
         }
