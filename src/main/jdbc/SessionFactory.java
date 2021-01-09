@@ -12,8 +12,11 @@ public class SessionFactory {
 
     DBMapper dbMapper = null;
     Map<Object,Table> tableMap;
+    DBFactory dbFactory;
 
     public SessionFactory(UtilDBTarget dbAdapter){
+        System.out.println(dbAdapter.getUtil().getDBName());
+        dbFactory = DBFactory.getDBFactory(dbAdapter.getUtil().getDBName());
         Session.openSession(dbAdapter, this);
         dbMapper = new DBMapper(Session.session);
         tableMap = new HashMap<>();
@@ -22,5 +25,9 @@ public class SessionFactory {
 
     public Session openSession(){
         return Session.session;
+    }
+
+    public DBFactory getDbFactory() {
+        return dbFactory;
     }
 }

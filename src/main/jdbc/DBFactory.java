@@ -1,5 +1,6 @@
 package main.jdbc;
 
+import TableT.DataTypeMapper.DataTypeMapper;
 import main.IConvertToString.DBAdapter;
 
 public abstract class DBFactory {
@@ -15,4 +16,6 @@ public abstract class DBFactory {
     }
 
     public abstract DBAdapter getDBAdapter();
+
+    public abstract DataTypeMapper getDBTypeMapper();
 }

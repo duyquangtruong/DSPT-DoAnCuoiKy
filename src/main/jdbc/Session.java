@@ -2,7 +2,7 @@ package main.jdbc;
 
 import ReadXML.UtilDBTarget;
 import TableT.Table.Table;
-import main.IConvertToString.ConvertToString;
+import main.IConvertToString.IConvertToString;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,23 +10,25 @@ import java.util.Map;
 
 public class Session {
     static Session session = null;
-    private ConvertToString iConvertToString;
+    private IConvertToString iConvertToString;
     private SessionFactory sessionFactory = null;
     private ConnectionUtils conn = null;
     private Map<Class, Table> tables;
 
-    private Session(String connectionConfig, String username, String password,String nameDB){
-        DBFactory dbFactory = DBFactory.getDBFactory(nameDB);
-        iConvertToString = dbFactory.getDBAdapter();
+    private Session(String connectionConfig, String username, String password,SessionFactory sessionFactory ){
+        this.sessionFactory = sessionFactory;
+        iConvertToString = sessionFactory.getDbFactory().getDBAdapter();
         conn = new ConnectionUtils();
         conn.open(connectionConfig,username,password);
         tables = new HashMap<>();
     }
-    private Session(UtilDBTarget dbAdapter){
+    private Session(UtilDBTarget dbAdapter, SessionFactory sessionFactory){
+        this.sessionFactory = sessionFactory;
+        iConvertToString = sessionFactory.getDbFactory().getDBAdapter();
         conn = new ConnectionUtils();
         conn.open(dbAdapter);
     }
-    public ConvertToString getConvertToString(){
+    public IConvertToString getConvertToString(){
         return iConvertToString;
     };
 
@@ -34,33 +36,14 @@ public class Session {
         return conn;
     };
 
-    Session(String connectionConfig,String nameDB){
-        DBFactory dbFactory = DBFactory.getDBFactory(nameDB);
-        iConvertToString = dbFactory.getDBAdapter();
-        conn = new ConnectionUtils();
-        conn.open(connectionConfig);
-        tables = new HashMap<>();
-    }
-
-    public static void openSession(String config,String username, String password,String nameDB){
-        if (session==null){
-            session = new Session(config,username,password,nameDB);
-        }
-        else {
-            session.close();
-            session = new Session(config,username,password,nameDB);
-        }
-    }
 
     public static void openSession(UtilDBTarget dbAdapter, SessionFactory sessionFactory){
         if (session==null){
-            session = new Session(dbAdapter);
-            sessionFactory = sessionFactory;
+            session = new Session(dbAdapter,sessionFactory);
         }
         else {
             session.close();
-            sessionFactory = sessionFactory;
-            session = new Session(dbAdapter);
+            session = new Session(dbAdapter, sessionFactory);
         }
     }
 
@@ -77,15 +60,6 @@ public class Session {
         conn.close();
     }
 
-    public static void open(String config,String username, String password,String nameDB){
-        if (session==null){
-            session = new Session(config,username,password,nameDB);
-        }
-        else {
-            session.close();
-            session = new Session(config,username,password,nameDB);
-        }
-    }
 
     public List createSQLQuery( Class T,String query){
         conn.executeQuery(query);
