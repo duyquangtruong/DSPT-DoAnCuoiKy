@@ -1,6 +1,8 @@
 package main.jdbc;
 
-import main.IConvertToString.IConvertToString;
+import ReadXML.UtilDBTarget;
+import TableT.Table.Table;
+import main.IConvertToString.ConvertToString;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,19 +10,23 @@ import java.util.Map;
 
 public class Session {
     static Session session = null;
-    private static IConvertToString iConvertToString;
-    private Map<Class,Object> tables;
+    private ConvertToString iConvertToString;
+    private SessionFactory sessionFactory = null;
     private ConnectionUtils conn = null;
+    private Map<Class, Table> tables;
 
-    Session(String connectionConfig, String username, String password,String nameDB){
+    private Session(String connectionConfig, String username, String password,String nameDB){
         DBFactory dbFactory = DBFactory.getDBFactory(nameDB);
         iConvertToString = dbFactory.getDBAdapter();
         conn = new ConnectionUtils();
         conn.open(connectionConfig,username,password);
         tables = new HashMap<>();
     }
-
-    public static IConvertToString getConvertToString(){
+    private Session(UtilDBTarget dbAdapter){
+        conn = new ConnectionUtils();
+        conn.open(dbAdapter);
+    }
+    public ConvertToString getConvertToString(){
         return iConvertToString;
     };
 
@@ -44,6 +50,26 @@ public class Session {
             session.close();
             session = new Session(config,username,password,nameDB);
         }
+    }
+
+    public static void openSession(UtilDBTarget dbAdapter, SessionFactory sessionFactory){
+        if (session==null){
+            session = new Session(dbAdapter);
+            sessionFactory = sessionFactory;
+        }
+        else {
+            session.close();
+            sessionFactory = sessionFactory;
+            session = new Session(dbAdapter);
+        }
+    }
+
+    public SessionFactory getSessionFactory(){
+        return sessionFactory;
+    }
+
+    public static Session getSession(){
+        return session;
     }
 
 
@@ -80,9 +106,10 @@ public class Session {
 
     public Object get(Class clazz, Object id){
         if (tables.containsKey(clazz)){
-            Object table = tables.get(clazz);
+            Table<?> table = tables.get(clazz);
             //conn.executeQuery(iConvertToString.queryString("*"));
         }
         return null;
     }
+
 }

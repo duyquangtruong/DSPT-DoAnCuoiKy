@@ -1,10 +1,7 @@
 package Generator.DBMapper;
 import  main.jdbc.*;
 
-import java.sql.Array;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -17,20 +14,25 @@ public class DBMapper {
     public static final String COL_DESC_PKTABLE_NAME = "PKTABLE_NAME";
     public static final String COL_DESC_PKCOLUMN_NAME = "PKCOLUMN_NAME";
     public static final String COL_DESC_COLUMN_NAME = "COLUMN_NAME";
-    public static final String COL_DESC_DATA_TYPE = "DATA_TYPE";
+    public static final String COL_DESC_DATA_TYPE = "TYPE_NAME";
     public static final String FOREIGN_INFO_KEY_TABLE = "Table";
     public static final String FOREIGN_INFO_KEY_COLUMN = "Column";
 
     private Session session = null;
     private DatabaseMetaData databaseMetaData = null;
     private ResultSet allTablesMetadatas = null;
+    private Connection connection = null;
+
+    public DatabaseMetaData getDatabaseMetaData(){return databaseMetaData;}
+    public ResultSet getAllTablesMetadatas(){return allTablesMetadatas;}
 
     public DBMapper(Session sessionToMap) {
         session = sessionToMap;
         try {
-            databaseMetaData = session.getConn().getDbConnection().getMetaData();
+            connection = session.getConn().getDbConnection();
+            databaseMetaData =connection.getMetaData();
 
-            allTablesMetadatas = databaseMetaData.getTables(null,null,null,new String[]{"TABLE"});
+            allTablesMetadatas = databaseMetaData.getTables(connection.getCatalog(),null,"%",new String[]{"TABLE"});
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -43,9 +45,25 @@ public class DBMapper {
 
         List<String> result = new ArrayList<String>();
 
-        for(int i=0;i<allTablesMetadatas.getMetaData().getColumnCount();i++){
-            result.add(allTablesMetadatas.getMetaData().getTableName(i));
+        Statement st = connection.createStatement();
+        ResultSet rs = null;
+        while (allTablesMetadatas.next()) {
+            String tablename = allTablesMetadatas.getString("TABLE_NAME");
+            //System.out.println("Table name: "+tablename);
+            result.add(tablename);
+//            String sql = "select * from "+tablename;
+//            rs = st.executeQuery(sql);
+//            ResultSetMetaData metaData = rs.getMetaData();
+//
+//            int rowCount = metaData.getColumnCount();
+//            System.out.println("Field  \tDataType");
+//
+//            for (int i = 0; i < rowCount; i++) {
+//                System.out.print(metaData.getColumnName(i + 1) + "  \t");
+//                System.out.println(metaData.getColumnTypeName(i + 1));
+//            }
         }
+        result.forEach(s -> System.out.println(s));
         return result;
     }
 
@@ -55,13 +73,15 @@ public class DBMapper {
         }
 
         List<String> result = new ArrayList<String>();
+        allTablesMetadatas.first();
 
-        ResultSet primaryKeys = databaseMetaData.getPrimaryKeys(null,null,tableName);
-        while(primaryKeys.next())
-        {
-            result.add(primaryKeys.getString(primaryKeys.getString(COL_DESC_PK_NAME)));
+        String catalog = allTablesMetadatas.getString("TABLE_CAT");
+        String schema = allTablesMetadatas.getString("TABLE_SCHEM");
+        try (ResultSet primaryKeys = databaseMetaData.getPrimaryKeys(catalog, schema, tableName)) {
+            while (primaryKeys.next()) {
+                System.out.println("Primary key: " + primaryKeys.getString("COLUMN_NAME"));
+            }
         }
-
         return result;
     }
 
@@ -83,7 +103,7 @@ public class DBMapper {
     /** Phuong thuc lay ten bang va thuoc tinh duoc tham chieu den.
      * @param tableName Ten bang chua khoa ngoai.
      * @param foreignKey Ten cua khoa ngoai.
-     * @return Key: thong tin can lay ("Table"/"Column") Value: la gia tri cua key.
+     * @return Key: thong tin can lay ("Table"/"Column") Value: ten cua "Table"/"Column".
      */
     public HashMap<String,String> getForeignInfo(String tableName, String foreignKey) throws SQLException {
         if(databaseMetaData == null){

@@ -1,13 +1,26 @@
 package main.jdbc;
 
-public class SessionFactory {
-    Session session = null;
+import Generator.DBMapper.DBMapper;
+import ReadXML.UtilDBAdapter;
+import ReadXML.UtilDBTarget;
+import TableT.Table.Table;
 
-    public SessionFactory(String config,String username, String password,String nameDB){
-        Session.openSession(config,username,password,nameDB);
-        session = Session.session;
+import java.util.HashMap;
+import java.util.Map;
+
+public class SessionFactory {
+
+    DBMapper dbMapper = null;
+    Map<Object,Table> tableMap;
+
+    public SessionFactory(UtilDBTarget dbAdapter){
+        Session.openSession(dbAdapter, this);
+        dbMapper = new DBMapper(Session.session);
+        tableMap = new HashMap<>();
     }
+
+
     public Session openSession(){
-        return session;
+        return Session.session;
     }
 }

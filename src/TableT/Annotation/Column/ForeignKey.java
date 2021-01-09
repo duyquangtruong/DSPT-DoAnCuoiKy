@@ -1,4 +1,4 @@
-package Annotation.Column;
+package TableT.Annotation.Column;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

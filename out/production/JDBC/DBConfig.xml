@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<ConfigDB>
+    <DBInfo type="permanent">
+        <url>jdbc:mysql://localhost:8889/testjdbc</url>
+        <username>root</username>
+        <password>root</password>
+    </DBInfo>
+</ConfigDB>
