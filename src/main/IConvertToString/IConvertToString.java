@@ -2,6 +2,8 @@ package main.IConvertToString;
 
 import java.util.Map;
 
+
+// ISqlAdapter:
 public interface IConvertToString {
 
     String queryString(String select,String where,
@@ -9,6 +11,8 @@ public interface IConvertToString {
                        String groupBy,String having);
     String queryString(String select, String from, Map<String,Object> params);
     String field(String tableName, String fieldName);
+    String table(String tableName);
+    String parameter(String parameterId);
 
     String updateString(String tableName, String primaryKey, Map<String,String> fieldValues);
     String insertString(String tableName, Map<String, String> fieldValues);

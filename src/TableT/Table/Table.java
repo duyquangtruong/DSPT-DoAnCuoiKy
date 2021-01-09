@@ -106,7 +106,7 @@ public class Table<T> {
         return data.substring(0,data.length()-1);
     }
 
-    private void mapTable() {
+    public void mapTable() {
         Class<?> cls = HocSinh.class;
 //        HocSinh hs = cls.getDeclaredAnnotation(HocSinh.class)
         // this.tableName
