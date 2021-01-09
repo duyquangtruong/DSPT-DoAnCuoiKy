@@ -20,7 +20,6 @@
     <orderEntry type="library" name="sqljdbc_8.2.2.0_enu" level="project" />
     <orderEntry type="library" name="sqljdbc42" level="project" />
     <orderEntry type="library" name="codemodel-2.6" level="project" />
-    <orderEntry type="library" name="jsonschema2pojo-core-1.0.2" level="project" />
     <orderEntry type="library" name="json-simple-1.1.1" level="project" />
     <orderEntry type="library" name="jackson-annotations-2.12.0-rc2" level="project" />
   </component>

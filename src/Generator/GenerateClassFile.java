@@ -8,11 +8,13 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import com.sun.codemodel.JCodeModel;
 
+import javax.xml.crypto.Data;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.nio.file.Files;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -42,15 +44,7 @@ public class GenerateClassFile {
         List<String> tableList = dbMapper.getAllTablesName();
 
         for(int i =0;i<tableList.size();i++){
-            createClass(dbMapper,tableList.get(i));
+            Writer.writeClass(tableList.get(i),dbMapper);
         }
-    }
-
-    private void createClass(DBMapper mapper,String tableName) throws SQLException {
-        List<String> primaryKeys = mapper.getPrimaryKey(tableName);
-        HashMap<String,String> attributes = mapper.getTableAttributes(tableName);
-        List<String> foreignKeys = mapper.getForeignKey(tableName);
-
-        Writer.writeClass(tableName,attributes);
     }
 }

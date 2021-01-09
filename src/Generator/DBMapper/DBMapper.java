@@ -25,6 +25,8 @@ public class DBMapper {
     private DatabaseMetaData databaseMetaData = null;
     private ResultSet allTablesMetadatas = null;
 
+    public DatabaseMetaData getDatabaseMetaData(){return databaseMetaData;}
+
     public DBMapper(Session sessionToMap) {
         session = sessionToMap;
         try {
@@ -83,7 +85,7 @@ public class DBMapper {
     /** Phuong thuc lay ten bang va thuoc tinh duoc tham chieu den.
      * @param tableName Ten bang chua khoa ngoai.
      * @param foreignKey Ten cua khoa ngoai.
-     * @return Key: thong tin can lay ("Table"/"Column") Value: la gia tri cua key.
+     * @return Key: thong tin can lay ("Table"/"Column") Value: ten cua "Table"/"Column".
      */
     public HashMap<String,String> getForeignInfo(String tableName, String foreignKey) throws SQLException {
         if(databaseMetaData == null){
