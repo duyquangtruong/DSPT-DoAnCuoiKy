@@ -1,56 +1,56 @@
 package Generator;
 
+import Generator.DBMapper.DBMapper;
+import ReadXML.*;
+import main.jdbc.ConnectionUtils;
+import main.jdbc.Session;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
-import org.jsonschema2pojo.*;
-import org.jsonschema2pojo.rules.RuleFactory;
 import com.sun.codemodel.JCodeModel;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.nio.file.Files;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.List;
 
 public class GenerateClassFile {
 
     @SuppressWarnings("unchecked")
-    public void Generate(String path,String className, String packageName){
-        JCodeModel codeModel = new JCodeModel();
+    public void Generate(String configPath) throws SQLException {
+        UtilDBTarget config = new UtilDBAdapter(configPath); //"src/ReadXML/DBConfig.xml"
+        UtilDB configInfo = config.getUtil();
 
-        JSONParser parser = new JSONParser();
-        String source = "";
-
-        try {
-            Object obj = parser.parse(new FileReader(path));
-
-            // A JSON object. Key value pairs are unordered. JSONObject supports java.util.Map interface.
-            JSONObject jsonObject = (JSONObject) obj;
-            source = jsonObject.toString();
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        Session session = Session.getSession();
+        if(session == null) {
+            return;
         }
 
-        GenerationConfig config = new DefaultGenerationConfig() {
-            @Override
-            public boolean isGenerateBuilders() {
-                // set config option by overriding method
-                return true;
-            }
-        };
-
-        SchemaMapper mapper = new SchemaMapper(new RuleFactory(config, new Jackson2Annotator(config), new SchemaStore()), new SchemaGenerator());
-        try {
-            // Problem with className and package
-            // Need help
-            mapper.generate(codeModel, className, packageName, source);
-        } catch (IOException e) {
-            e.printStackTrace();
+        ConnectionUtils connection = session.getConn();
+        if(connection == null){
+            return;
         }
 
-        try {
-            codeModel.build(Files.createTempDirectory("required").toFile());
-        } catch (IOException e) {
-            e.printStackTrace();
+        connection.open(configInfo.toString());
+
+        //Truyen Session muon map database
+        DBMapper dbMapper = new DBMapper(session);
+
+        List<String> tableList = dbMapper.getAllTablesName();
+
+        for(int i =0;i<tableList.size();i++){
+            createClass(dbMapper,tableList.get(i));
         }
+    }
+
+    private void createClass(DBMapper mapper,String tableName) throws SQLException {
+        List<String> primaryKeys = mapper.getPrimaryKey(tableName);
+        HashMap<String,String> attributes = mapper.getTableAttributes(tableName);
+        List<String> foreignKeys = mapper.getForeignKey(tableName);
+
+        Writer.writeClass(tableName,attributes);
     }
 }

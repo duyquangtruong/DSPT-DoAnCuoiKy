@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+// SQl adapter base:
 abstract public class DBBaseQuery {
     public String querySQL(String select, String from,String where, String order
             , String groupBy, String having){

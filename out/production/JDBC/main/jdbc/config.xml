@@ -4,9 +4,7 @@
         <property name = "dack.driver">
             com.mysql.jdbc.Driver
         </property>
-
         <!-- Assume test is the database name -->
-
         <property name = "dack.url">jdbc:mysql://localhost:8889/testjdbc</property>
 
         <property name = "dack.username">root</property>

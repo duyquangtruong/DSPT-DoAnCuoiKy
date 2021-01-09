@@ -1,4 +1,5 @@
-package Annotation;
+package TableT.Annotation;
+
 
 public @interface Annotation {
 

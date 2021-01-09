@@ -2,7 +2,6 @@ package main.IConvertToString;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.Map;
 
 public abstract class DBAdapter extends DBBaseQuery implements IConvertToString {
@@ -25,6 +24,13 @@ public abstract class DBAdapter extends DBBaseQuery implements IConvertToString 
     @Override
     public String field(String tableName, String fieldName) {
         return String.format("%s.%s",tableName,fieldName);
+    }
+
+
+    // Missing implementation:
+    @Override
+    public String table(String tableName) {
+        return null;
     }
 
     @Override
