@@ -16,7 +16,7 @@ public abstract class TableAction {
     protected String primaryKey;
     public IConvertToString getIConvertToString()
     {
-        return Session.getConvertToString();
+        return Session.getSession().getConvertToString();
     }
 
     //GetFieldValue

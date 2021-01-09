@@ -9,6 +9,7 @@ import TableT.Annotation.HasOne;
 import TableT.Annotation.TableDB;
 import TableT.DataTypeMapper.DataTypeMapper;
 import TableT.DataTypeMapper.SQLDataTypeMapper;
+import main.jdbc.Session;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -117,7 +118,7 @@ public class Table<T> {
         columns = new HashMap<String, Column>();
         hasOne = new HashMap<>();
         hasMany = new HashMap<>();
-        DataTypeMapper dataTypeMapper = new SQLDataTypeMapper();
+        DataTypeMapper dataTypeMapper = Session.getSession().getSessionFactory().getDbFactory().getDBTypeMapper();
         TableDB tableNameDB = cls.getAnnotation(TableDB.class);
         if(tableNameDB!=null ){
             tableName= tableNameDB.value();

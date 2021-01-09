@@ -2,6 +2,8 @@ package Generator;
 
 import Generator.DBMapper.DBMapper;
 import Generator.DBMapper.Standardizer;
+import TableT.DataTypeMapper.DataTypeMapper;
+import main.jdbc.Session;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -38,7 +40,9 @@ public class Writer {
             List<String> primaryKeys = mapper.getPrimaryKey(className);
             List<String> foreignKeys = mapper.getForeignKey(className);
             HashMap<String,String> attributes = mapper.getTableAttributes(className);
+            DataTypeMapper dataTypeMapper = Session.getSession().getSessionFactory().getDbFactory().getDBTypeMapper();
 
+            classFile.write("package DAO;\n\n");
             classFile.write("import TableT.Annotation.Column.*;\n");
             classFile.write("import TableT.Annotation.*;\n\n");
 
@@ -72,7 +76,7 @@ public class Writer {
                     classFile.write("\t@Required()\n");
                 }
 
-                classFile.write("\tprivate "+attributes.get(attributeName)+" "+ Standardizer.NameStandardize(attributeName)+";\n\n");
+                classFile.write("\tprivate "+dataTypeMapper.getClassType(attributes.get(attributeName)) +" "+ Standardizer.NameStandardize(attributeName)+";\n\n");
             }
 
             // Them create options ben duoi

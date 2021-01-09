@@ -2,6 +2,7 @@
 
 <ConfigDB>
     <DBInfo type="permanent">
+        <DBName>mysql</DBName>
         <url>jdbc:mysql://localhost:8889/testjdbc</url>
         <username>root</username>
         <password>root</password>
