@@ -1,5 +1,7 @@
 package main.jdbc;
 
+import TableT.Table.HocSinh;
+import TableT.Table.Table;
 import main.IConvertToString.IConvertToString;
 
 import java.util.HashMap;
@@ -9,8 +11,9 @@ import java.util.Map;
 public class Session {
     static Session session = null;
     private IConvertToString iConvertToString;
-    private Map<Class,Object> tables;
+    private SessionFactory sessionFactory = null;
     private ConnectionUtils conn = null;
+    private Map<Class, Table> tables;
 
     Session(String connectionConfig, String username, String password,String nameDB){
         DBFactory dbFactory = DBFactory.getDBFactory(nameDB);
@@ -80,7 +83,7 @@ public class Session {
 
     public Object get(Class clazz, Object id){
         if (tables.containsKey(clazz)){
-            Object table = tables.get(clazz);
+            Table<?> table = tables.get(clazz);
             //conn.executeQuery(iConvertToString.queryString("*"));
         }
         return null;
