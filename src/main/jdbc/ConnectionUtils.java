@@ -14,6 +14,7 @@ public class ConnectionUtils {
     ResultSet rs = null;
 
     public void open(String connectionConfig) {
+        System.out.println("Nooooo");
         try {
             //registering the jdbc driver here, your string to use
             //here depends on what driver you are using.
@@ -37,7 +38,7 @@ public class ConnectionUtils {
     }
 
     public void open(UtilDBTarget dbTarget) {
-        if (dbTarget.getUtil().getUsername()==null){
+        if (dbTarget.getUtil().getUsername().isEmpty() ||dbTarget.getUtil().getUsername().equals("") ){
             open(dbTarget.getUtil().getUrl());
         }
         else open(dbTarget.getUtil().getUrl(),dbTarget.getUtil().getUsername(),dbTarget.getUtil().getPassword());

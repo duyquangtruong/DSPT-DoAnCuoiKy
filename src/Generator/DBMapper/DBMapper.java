@@ -1,10 +1,7 @@
 package Generator.DBMapper;
 import  main.jdbc.*;
 
-import java.sql.Array;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -24,13 +21,17 @@ public class DBMapper {
     private Session session = null;
     private DatabaseMetaData databaseMetaData = null;
     private ResultSet allTablesMetadatas = null;
+    private Connection connection = null;
+
+    public DatabaseMetaData getDatabaseMetaData(){return databaseMetaData;}
 
     public DBMapper(Session sessionToMap) {
         session = sessionToMap;
         try {
-            databaseMetaData = session.getConn().getDbConnection().getMetaData();
+            connection = session.getConn().getDbConnection();
+            databaseMetaData =connection.getMetaData();
 
-            allTablesMetadatas = databaseMetaData.getTables(null,null,null,new String[]{"TABLE"});
+            allTablesMetadatas = databaseMetaData.getTables(connection.getCatalog(),null,"%",new String[]{"TABLE"});
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -43,9 +44,25 @@ public class DBMapper {
 
         List<String> result = new ArrayList<String>();
 
-        for(int i=0;i<allTablesMetadatas.getMetaData().getColumnCount();i++){
-            result.add(allTablesMetadatas.getMetaData().getTableName(i));
+        Statement st = connection.createStatement();
+        ResultSet rs = null;
+        while (allTablesMetadatas.next()) {
+            String tablename = allTablesMetadatas.getString("TABLE_NAME");
+            //System.out.println("Table name: "+tablename);
+            result.add(tablename);
+//            String sql = "select * from "+tablename;
+//            rs = st.executeQuery(sql);
+//            ResultSetMetaData metaData = rs.getMetaData();
+//
+//            int rowCount = metaData.getColumnCount();
+//            System.out.println("Field  \tDataType");
+//
+//            for (int i = 0; i < rowCount; i++) {
+//                System.out.print(metaData.getColumnName(i + 1) + "  \t");
+//                System.out.println(metaData.getColumnTypeName(i + 1));
+//            }
         }
+        result.forEach(s -> System.out.println(s));
         return result;
     }
 
@@ -83,7 +100,7 @@ public class DBMapper {
     /** Phuong thuc lay ten bang va thuoc tinh duoc tham chieu den.
      * @param tableName Ten bang chua khoa ngoai.
      * @param foreignKey Ten cua khoa ngoai.
-     * @return Key: thong tin can lay ("Table"/"Column") Value: la gia tri cua key.
+     * @return Key: thong tin can lay ("Table"/"Column") Value: ten cua "Table"/"Column".
      */
     public HashMap<String,String> getForeignInfo(String tableName, String foreignKey) throws SQLException {
         if(databaseMetaData == null){

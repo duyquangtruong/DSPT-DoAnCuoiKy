@@ -5,17 +5,21 @@ import ReadXML.UtilDBTarget;
 
 public class Configuration {
     String baseURL = "src/DBconfig.xml";
-    UtilDBTarget dbAdapter;
+    UtilDBTarget dbTarget;
 
     public void configure(){
         configure(baseURL);
     }
 
+    public UtilDBTarget getDbTarget(){
+        return dbTarget;
+    }
+
     public void configure(String inputBaseUrl){
-        dbAdapter = new UtilDBAdapter(inputBaseUrl);
+        dbTarget = new UtilDBAdapter(inputBaseUrl);
     }
 
     public SessionFactory buildSessionFactory() {
-        return new SessionFactory(dbAdapter);
+        return new SessionFactory(dbTarget);
     }
 }

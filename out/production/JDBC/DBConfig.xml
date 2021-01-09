@@ -2,9 +2,8 @@
 
 <ConfigDB>
     <DBInfo type="permanent">
-        <DBName>Seagull</DBName>
-        <url>3674</url>
-        <username>34</username>
-        <password>34</password>
+        <url>jdbc:mysql://localhost:8889/testjdbc</url>
+        <username>root</username>
+        <password>root</password>
     </DBInfo>
 </ConfigDB>
