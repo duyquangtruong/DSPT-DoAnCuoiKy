@@ -14,7 +14,7 @@ public class DBMapper {
     public static final String COL_DESC_PKTABLE_NAME = "PKTABLE_NAME";
     public static final String COL_DESC_PKCOLUMN_NAME = "PKCOLUMN_NAME";
     public static final String COL_DESC_COLUMN_NAME = "COLUMN_NAME";
-    public static final String COL_DESC_DATA_TYPE = "DATA_TYPE";
+    public static final String COL_DESC_DATA_TYPE = "TYPE_NAME";
     public static final String FOREIGN_INFO_KEY_TABLE = "Table";
     public static final String FOREIGN_INFO_KEY_COLUMN = "Column";
 
@@ -24,6 +24,7 @@ public class DBMapper {
     private Connection connection = null;
 
     public DatabaseMetaData getDatabaseMetaData(){return databaseMetaData;}
+    public ResultSet getAllTablesMetadatas(){return allTablesMetadatas;}
 
     public DBMapper(Session sessionToMap) {
         session = sessionToMap;
@@ -72,13 +73,15 @@ public class DBMapper {
         }
 
         List<String> result = new ArrayList<String>();
+        allTablesMetadatas.first();
 
-        ResultSet primaryKeys = databaseMetaData.getPrimaryKeys(null,null,tableName);
-        while(primaryKeys.next())
-        {
-            result.add(primaryKeys.getString(primaryKeys.getString(COL_DESC_PK_NAME)));
+        String catalog = allTablesMetadatas.getString("TABLE_CAT");
+        String schema = allTablesMetadatas.getString("TABLE_SCHEM");
+        try (ResultSet primaryKeys = databaseMetaData.getPrimaryKeys(catalog, schema, tableName)) {
+            while (primaryKeys.next()) {
+                System.out.println("Primary key: " + primaryKeys.getString("COLUMN_NAME"));
+            }
         }
-
         return result;
     }
 
