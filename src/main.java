@@ -14,7 +14,7 @@ public class main {
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.openSession();
         List<Object[]> list = session.createQuery("Select * from first_table");
-        list.forEach(o -> System.out.println(o));
+
         // Generate file
 //        Configuration configuration = new Configuration();
 //        configuration.configure();

@@ -32,7 +32,7 @@ public class Session {
         return iConvertToString;
     };
 
-    public ConnectionUtils getConn(){
+    public  ConnectionUtils getConn(){
         return conn;
     };
 

@@ -69,11 +69,13 @@ public class ConnectionUtils {
 
     }
 
-    public void executeQuery(String sqlQuery) {
+    public Boolean executeQuery(String sqlQuery) {
         try {
             rs = statement.executeQuery(sqlQuery);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
