@@ -29,7 +29,7 @@ public abstract class DomainObj {
 
     private <T> void loadFromDB(){
         if(!isLoaded()){
-            Session session = Session.getSession();
+//            Session session = Session.getSession();
             // Goi query tu session de lay du lieu
 
             setStatusLoaded();

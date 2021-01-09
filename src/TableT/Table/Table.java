@@ -107,7 +107,7 @@ public class Table<T> {
     }
 
     private void mapTable() {
-        Class<?> cls = HocSinh.class;
+        Class<?> cls = tobject.getClass();
 //        HocSinh hs = cls.getDeclaredAnnotation(HocSinh.class)
         // this.tableName
         columns = new HashMap<String, Column>();

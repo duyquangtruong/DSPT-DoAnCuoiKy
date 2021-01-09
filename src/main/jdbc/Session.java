@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class Session {
     static Session session = null;
-    private IConvertToString iConvertToString;
+    private static IConvertToString iConvertToString;
     private Map<Class,Object> tables;
     private ConnectionUtils conn = null;
 
@@ -20,11 +20,11 @@ public class Session {
         tables = new HashMap<>();
     }
 
-    public IConvertToString getConvertToString(){
+    public static IConvertToString getConvertToString(){
         return iConvertToString;
     };
 
-    public ConnectionUtils getConn(){
+    public  ConnectionUtils getConn(){
         return conn;
     };
 
