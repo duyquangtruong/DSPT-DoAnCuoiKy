@@ -1,5 +1,8 @@
 package main.jdbc;
 
+import ReadXML.UtilDB;
+import ReadXML.UtilDBTarget;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,13 @@ public class ConnectionUtils {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void open(UtilDBTarget dbTarget) {
+        if (dbTarget.getUtil().getUsername()==null){
+            open(dbTarget.getUtil().getUrl());
+        }
+        else open(dbTarget.getUtil().getUrl(),dbTarget.getUtil().getUsername(),dbTarget.getUtil().getPassword());
     }
 
     public void close() {

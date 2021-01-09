@@ -1,12 +1,12 @@
 package TableT.Table;
 
-import Annotation.Column.ForeignKey;
-import Annotation.Column.ColumnDB;
-import Annotation.Column.PrimaryKey;
-import Annotation.Column.Required;
-import Annotation.HasOne;
-import Annotation.HasMany;
-import Annotation.TableDB;
+import TableT.Annotation.Column.ColumnDB;
+import TableT.Annotation.Column.ForeignKey;
+import TableT.Annotation.Column.PrimaryKey;
+import TableT.Annotation.Column.Required;
+import TableT.Annotation.HasMany;
+import TableT.Annotation.HasOne;
+import TableT.Annotation.TableDB;
 import TableT.DataTypeMapper.DataTypeMapper;
 import TableT.DataTypeMapper.SQLDataTypeMapper;
 
