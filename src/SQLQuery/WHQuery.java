@@ -1,7 +1,5 @@
 package SQLQuery;
 
-import main.IConvertToString.IConvertToString;
-
 public class WHQuery extends SQLBuilder {
 
     public WHQuery() {

@@ -2,7 +2,7 @@ package main.jdbc;
 
 import ReadXML.UtilDBTarget;
 import TableT.Table.Table;
-import main.IConvertToString.IConvertToString;
+import main.IConvertToString.ConvertToString;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class Session {
     static Session session = null;
-    private IConvertToString iConvertToString;
+    private ConvertToString iConvertToString;
     private SessionFactory sessionFactory = null;
     private ConnectionUtils conn = null;
     private Map<Class, Table> tables;
@@ -26,7 +26,7 @@ public class Session {
         conn = new ConnectionUtils();
         conn.open(dbAdapter);
     }
-    public IConvertToString getConvertToString(){
+    public ConvertToString getConvertToString(){
         return iConvertToString;
     };
 

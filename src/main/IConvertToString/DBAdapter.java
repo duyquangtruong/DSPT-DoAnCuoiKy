@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.Map;
 
-public abstract class DBAdapter extends DBBaseQuery implements IConvertToString {
+public abstract class DBAdapter extends DBBaseQuery implements ConvertToString {
 
     @Override
     public String queryString(String select, String where, String from, String order, String groupBy, String having) {

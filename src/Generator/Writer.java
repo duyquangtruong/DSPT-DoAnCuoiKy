@@ -1,6 +1,7 @@
 package Generator;
 
 import Generator.DBMapper.DBMapper;
+import Generator.DBMapper.Standardizer;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,11 +18,11 @@ import static Generator.DBMapper.DBMapper.FOREIGN_INFO_KEY_TABLE;
 public class Writer {
 
     public static final String REQUIRED_YES = "YES";
-    public static final String REQUIRED_NO = "NO";
     public static final String srcOutput = System.getProperty("user.dir")+"\\src\\DAO";
 
     public static void writeClass(String className, DBMapper mapper){
         try {
+            System.out.println(srcOutput);
             File directory = new File(srcOutput);
             if (!directory.exists()){
                 directory.mkdir();
@@ -71,7 +72,7 @@ public class Writer {
                     classFile.write("\t@Required()\n");
                 }
 
-                classFile.write("\tprivate "+attributes.get(attributeName)+" "+attributeName+";\n\n");
+                classFile.write("\tprivate "+attributes.get(attributeName)+" "+ Standardizer.NameStandardize(attributeName)+";\n\n");
             }
 
             // Them create options ben duoi
@@ -84,4 +85,6 @@ public class Writer {
             e.printStackTrace();
         }
     }
+
+
 }
