@@ -46,6 +46,10 @@ public class Session {
         }
     }
 
+    public static Session getSession(){
+        return session;
+    }
+
 
     private void close() {
         conn.close();

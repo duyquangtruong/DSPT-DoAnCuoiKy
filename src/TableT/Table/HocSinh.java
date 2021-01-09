@@ -1,9 +1,9 @@
 package TableT.Table;
 
-import Annotation.Column.ColumnDB;
-import Annotation.Column.ForeignKey;
-import Annotation.Column.PrimaryKey;
-import Annotation.TableDB;
+import TableT.Annotation.Column.ColumnDB;
+import TableT.Annotation.Column.ForeignKey;
+import TableT.Annotation.Column.PrimaryKey;
+import TableT.Annotation.TableDB;
 
 import java.lang.annotation.Annotation;
 
