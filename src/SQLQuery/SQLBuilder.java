@@ -1,6 +1,6 @@
 package SQLQuery;
 
-import main.IConvertToString.ConvertToString;
+import main.IConvertToString.IConvertToString;
 import main.jdbc.Session;
 
 import java.util.*;
@@ -9,7 +9,7 @@ public abstract class SQLBuilder {
 
     protected List<String> _queryParamList = new ArrayList<>();
 
-    protected static ConvertToString _converter = Session.getSession().getConvertToString();
+    protected static IConvertToString _converter = Session.getSession().getConvertToString();
 
     protected abstract String paramToQuery();
 

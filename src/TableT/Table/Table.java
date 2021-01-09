@@ -15,18 +15,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Table<T> {
-    private T tobject;
+    private Class<T> tobject;
 
     public Table(Class<T> tclass)
             throws InstantiationException, IllegalAccessException {
 
 //        this.tobject = (T) tclass.newInstance();
-        this.tobject = (T) tclass.newInstance();
+        tobject = tclass;
         System.out.println(tclass.getClass());
+        mapTable();
     }
 
-    public T getTObject() {
-        return this.tobject;
+    public Class<T> getTObject() {
+        return tobject;
     }
 
     private String tableName;
@@ -72,13 +73,16 @@ public class Table<T> {
     }
 
     public String getPrimaryKey() {
-        for (Map.Entry<String,Column> column:columns.entrySet()){
+        if(columns!=null){
+            for (Map.Entry<String,Column> column:columns.entrySet()){
 //            System.out.println(column.getValue().getPrimaryKey());
-            if(column.getValue().getPrimaryKey()){
+                if(column.getValue().getPrimaryKey()==true){
 
-              return column.getValue().getColumnName();
+                    return column.getValue().getColumnName();
+                }
             }
         }
+
         return null;
     }
 
@@ -107,7 +111,7 @@ public class Table<T> {
     }
 
     private void mapTable() {
-        Class<?> cls = tobject.getClass();
+        Class<?> cls = tobject;
 //        HocSinh hs = cls.getDeclaredAnnotation(HocSinh.class)
         // this.tableName
         columns = new HashMap<String, Column>();

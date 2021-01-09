@@ -1,7 +1,6 @@
 package TableAction;
 
 import TableT.Table.Column;
-import com.sun.beans.introspect.PropertyInfo;
 import main.IConvertToString.IConvertToString;
 import main.jdbc.ConnectionUtils;
 import main.jdbc.Session;

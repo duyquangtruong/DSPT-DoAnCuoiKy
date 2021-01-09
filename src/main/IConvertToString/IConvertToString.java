@@ -4,7 +4,7 @@ import java.util.Map;
 
 
 // ISqlAdapter:
-public interface ConvertToString {
+public interface IConvertToString {
 
     String queryString(String select,String where,
                        String from,String order,
