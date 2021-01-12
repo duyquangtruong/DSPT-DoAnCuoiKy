@@ -26,11 +26,15 @@ public abstract class DBAdapter extends DBBaseQuery implements IConvertToString 
         return String.format("%s.%s",tableName,fieldName);
     }
 
+    @Override
+    public String parameter(String parameterId) {
+        return "@" + parameterId;
+    }
 
-    // Missing implementation:
+
     @Override
     public String table(String tableName) {
-        return null;
+        return String.format("%s",tableName);
     }
 
     @Override

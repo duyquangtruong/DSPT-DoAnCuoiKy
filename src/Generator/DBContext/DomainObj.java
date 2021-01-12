@@ -7,6 +7,7 @@ public abstract class DomainObj {
     private status objStatus;
     private Object key;
 
+
     public Object getKey(){
         return key;
     }
@@ -31,6 +32,9 @@ public abstract class DomainObj {
         if(!isLoaded()){
 //            Session session = Session.getSession();
             // Goi query tu session de lay du lieu
+            // Call function to load dat from db to client:
+            // Empty implement:
+
 
             setStatusLoaded();
         }

@@ -5,6 +5,7 @@ import ReadXML.UtilDBTarget;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ConnectionUtils {
@@ -85,6 +86,11 @@ public class ConnectionUtils {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    // Empty implementation:
+    public void excuteQuery(String sqlQuery, HashMap<Object, String> param){
+
     }
 
     public List<Object[]> getAllRows() {

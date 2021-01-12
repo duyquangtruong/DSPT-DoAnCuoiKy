@@ -1,22 +1,21 @@
 package TableT.Table;
 
-import TableT.Annotation.Column.ColumnDB;
-import TableT.Annotation.Column.ForeignKey;
-import TableT.Annotation.Column.PrimaryKey;
-import TableT.Annotation.Column.Required;
-import TableT.Annotation.HasMany;
-import TableT.Annotation.HasOne;
-import TableT.Annotation.TableDB;
+import Annotation.Column.ForeignKey;
+import Annotation.Column.ColumnDB;
+import Annotation.Column.PrimaryKey;
+import Annotation.Column.Required;
+import Annotation.HasOne;
+import Annotation.HasMany;
+import Annotation.TableDB;
 import TableT.DataTypeMapper.DataTypeMapper;
 import TableT.DataTypeMapper.SQLDataTypeMapper;
-import main.jdbc.Session;
 
+import javax.xml.crypto.dsig.keyinfo.KeyValue;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Table<T> {
-    private Class<T> tobject;
+    private T tobject;
 
     public Table(Class<T> tclass)
             throws InstantiationException, IllegalAccessException {
@@ -33,7 +32,10 @@ public class Table<T> {
 
     private String tableName;
     private String primaryKeyDB="";
-    //UnitOfWork
+
+    //DB Context
+    DBContext dbContext = new DBContext();
+
     Map<String, Column> columns ;
     Map<String, String> hasOne ;
     Map<String, String> hasMany ;
@@ -211,5 +213,55 @@ public class Table<T> {
         }
 
     }
+
+
+    // Not finish:
+    public void loadData(DomainObj obj){
+        if(dbContext.isExisted(obj.getKey()))
+            return;
+        HashMap<String, Object> sqlParams = new HashMap<String, Object>();
+        sqlParams.put(getPrimaryKey(), obj.getKey());
+        String sqlQuery = converter.queryString(getDataSQL(), tableName, sqlParams);
+
+
+
+    }
+
+
+    public String getForeignKeyFieldName(String refTableName){
+        for (Map.Entry<String, Column> column: columns.entrySet()) {
+            if(column.getValue().getPrimaryKey()){
+                if(column.getValue().getRefTable().equals(refTableName)){
+                    return column.getKey();
+                }
+            }
+        }
+        return null;
+    }
+
+
+    // Empty implementation:
+    private List<T> findAllWithSqlParams(String query, HashMap<String, Object> sqlParams){
+        return null;
+    }
+
+
+    public List<T> findAll(){
+        return null;
+    }
+
+
+    public List<T> findAllWithValue(String field, Object value){
+        return null;
+    }
+
+
+    public T findOneWithValue(Object field, Object value){
+        return null;
+    }
+
+
+
+
 
 }
