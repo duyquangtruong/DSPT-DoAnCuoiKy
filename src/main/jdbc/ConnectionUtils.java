@@ -88,11 +88,6 @@ public class ConnectionUtils {
         }
     }
 
-    // Empty implementation:
-    public void excuteQuery(String sqlQuery, HashMap<Object, String> param){
-
-    }
-
     public List<Object[]> getAllRows() {
         try {
             List<Object[]> rows = new ArrayList<>();
@@ -113,5 +108,11 @@ public class ConnectionUtils {
 
     public Connection getDbConnection(){
         return dbConnection;
+    }
+
+
+   // Empty implement:
+    public Object[] getReaderValue(){
+        return null;
     }
 }

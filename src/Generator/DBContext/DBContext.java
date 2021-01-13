@@ -91,4 +91,25 @@ public class DBContext {
 
         return true;
     }
+
+    public void log(){
+        System.out.print(String.format(">> Retrieve object "));
+
+        System.out.print("--- Existing object ---");
+        for(Object obj : currentRows.entrySet()){
+            System.out.print(obj);
+        }
+
+        System.out.print("--- Prepare to insert new object ---");
+        for(Object obj : newRows.entrySet()){
+            System.out.print(obj);
+        }
+
+        System.out.print("--- Delete object ---");
+        for(Object obj : removedRows.entrySet()){
+            System.out.print(obj);
+        }
+    }
+
+
 }
