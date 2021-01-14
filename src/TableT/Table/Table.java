@@ -8,26 +8,23 @@ import TableT.Annotation.HasMany;
 import TableT.Annotation.HasOne;
 import TableT.Annotation.TableDB;
 import TableT.DataTypeMapper.DataTypeMapper;
-import TableT.DataTypeMapper.SQLDataTypeMapper;
 import main.jdbc.Session;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Table<T> {
-    private Class<T> tobject;
+public class Table {
+    private Class tobject;
 
-    public Table(Class<T> tclass)
-            throws InstantiationException, IllegalAccessException {
+    public Table(Class tclass) {
 
-//        this.tobject = (T) tclass.newInstance();
         tobject = tclass;
         System.out.println(tclass.getClass());
         mapTable();
     }
 
-    public Class<T> getTObject() {
+    public Class getTObject() {
         return tobject;
     }
 

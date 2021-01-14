@@ -4,23 +4,19 @@ import ReadXML.UtilDBTarget;
 import TableT.Table.Table;
 import main.IConvertToString.IConvertToString;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Session {
     static Session session = null;
     private IConvertToString iConvertToString;
     private SessionFactory sessionFactory = null;
     private ConnectionUtils conn = null;
-    private Map<Class, Table> tables;
 
     private Session(String connectionConfig, String username, String password,SessionFactory sessionFactory ){
         this.sessionFactory = sessionFactory;
         iConvertToString = sessionFactory.getDbFactory().getDBAdapter();
         conn = new ConnectionUtils();
         conn.open(connectionConfig,username,password);
-        tables = new HashMap<>();
     }
     private Session(UtilDBTarget dbAdapter, SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
@@ -72,16 +68,18 @@ public class Session {
     }
 
     public boolean save(Object util){
-        if (tables.containsKey(util.getClass())){
+        Table table = sessionFactory.getTable(util.getClass());
+        if (table!=null){
 
         }
         return true;
     }
 
+
     public Object get(Class clazz, Object id){
-        if (tables.containsKey(clazz)){
-            Table<?> table = tables.get(clazz);
-            //conn.executeQuery(iConvertToString.queryString("*"));
+        Table table = sessionFactory.getTable(clazz);
+        if (table != null){
+            conn.executeQuery(iConvertToString.queryString("*"));
         }
         return null;
     }

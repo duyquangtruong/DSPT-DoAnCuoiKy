@@ -22,6 +22,7 @@ public class DBMapper {
     private DatabaseMetaData databaseMetaData = null;
     private ResultSet allTablesMetadatas = null;
     private Connection connection = null;
+    private List<String> AllTables = null;
 
     public DatabaseMetaData getDatabaseMetaData(){return databaseMetaData;}
     public ResultSet getAllTablesMetadatas(){return allTablesMetadatas;}
@@ -43,14 +44,14 @@ public class DBMapper {
             return null;
         }
 
-        List<String> result = new ArrayList<String>();
+        AllTables = new ArrayList<String>();
 
         Statement st = connection.createStatement();
         ResultSet rs = null;
         while (allTablesMetadatas.next()) {
             String tablename = allTablesMetadatas.getString("TABLE_NAME");
             //System.out.println("Table name: "+tablename);
-            result.add(tablename);
+            AllTables.add(tablename);
 //            String sql = "select * from "+tablename;
 //            rs = st.executeQuery(sql);
 //            ResultSetMetaData metaData = rs.getMetaData();
@@ -63,8 +64,18 @@ public class DBMapper {
 //                System.out.println(metaData.getColumnTypeName(i + 1));
 //            }
         }
-        result.forEach(s -> System.out.println(s));
-        return result;
+        AllTables.forEach(s -> System.out.println(s));
+        return AllTables;
+    }
+
+    public List<String> getAllTables() {
+        return AllTables;
+    }
+
+    public boolean checkNameTable(String nameTable) {
+        if (AllTables.contains(nameTable))
+            return true;
+        return false;
     }
 
     public List<String> getPrimaryKey(String tableName) throws SQLException {
