@@ -1,10 +1,11 @@
-package SQLQuery;
+package SQLQuery.element;
 
+import SQLQuery.SQLBuilderHelper;
 import main.constants.Function;
 
-public class HavingQuery extends SQLBuilder{
+public class Having extends SQLBuilderHelper {
 
-    public HavingQuery() {
+    public Having() {
     }
 
     public String addHaving(String tableName, String fieldName, Function function, String op, String param){

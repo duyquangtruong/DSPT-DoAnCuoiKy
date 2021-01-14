@@ -1,8 +1,10 @@
-package SQLQuery;
+package SQLQuery.element;
 
-public class JoinQuery extends SQLBuilder{
+import SQLQuery.SQLBuilderHelper;
 
-    public JoinQuery() {
+public class Join extends SQLBuilderHelper {
+
+    public Join() {
     }
 
     public void addJoin(String orginTableName, String leftField, String joinTableName, String rightField){

@@ -1,8 +1,10 @@
-package SQLQuery;
+package SQLQuery.element;
 
-public class OrderByQuey extends SQLBuilder{
+import SQLQuery.SQLBuilderHelper;
 
-    public OrderByQuey() {
+public class OrderBy extends SQLBuilderHelper {
+
+    public OrderBy() {
     }
 
     @Override

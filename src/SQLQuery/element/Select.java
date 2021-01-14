@@ -1,10 +1,11 @@
-package SQLQuery;
+package SQLQuery.element;
 
+import SQLQuery.SQLBuilderHelper;
 
 // SELECT Statement in query:
-public class SelectionQuery extends SQLBuilder {
+public class Select extends SQLBuilderHelper {
 
-    public SelectionQuery() {
+    public Select() {
     }
 
     public void addTable(String tableName){

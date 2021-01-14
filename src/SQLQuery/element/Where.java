@@ -1,13 +1,15 @@
-package SQLQuery;
+package SQLQuery.element;
 
-public class WHQuery extends SQLBuilder {
+import SQLQuery.SQLBuilderHelper;
 
-    public WHQuery() {
+public class Where extends SQLBuilderHelper {
+
+    public Where() {
     }
 
     @Override
     public void addParam(String param) {
-        if(_queryParamList.isEmpty() == false){
+        if(!_queryParamList.isEmpty()){
             super.addParam(param);
         }
     }
@@ -60,6 +62,6 @@ public class WHQuery extends SQLBuilder {
 
     @Override
     protected String paramToQuery() {
-        return "WHERE" + String.join("", _queryParamList);
+        return "WHERE" + String.join(" ", _queryParamList);
     }
 }
