@@ -18,4 +18,5 @@ public interface IConvertToString {
     String insertString(String tableName, Map<String, String> fieldValues);
     String deleteString(String tableName, String primaryKey, Map<String, String> fieldValues);
     String deleteString(String tableName, String primaryKey, Map<String, String> fieldValues,int limit);
+
 }

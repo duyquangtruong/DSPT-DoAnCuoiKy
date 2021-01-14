@@ -3,13 +3,13 @@ package Generator.DBContext;
 
 import java.util.*;
 
-public class DBContext {
+public class DBContext extends DomainObj{
     // Cac HashMap se Hash theo ID cua object de lay data Ex: <id,object data>
-    private HashMap<Object,Object> newRows = new HashMap<Object,Object>();
-    private HashMap<Object,Object> removedRows = new HashMap<Object,Object>();
-    private HashMap<Object,Object> currentRows = new HashMap<Object,Object>();
+    private Map<Object,Object> newRows = new HashMap<Object,Object>();
+    private Map<Object,Object> removedRows = new HashMap<Object,Object>();
+    private Map<Object,Object> currentRows = new HashMap<Object,Object>();
 
-    public Boolean isExisted(Object key){
+    public boolean isExisted(Object key){
         if(key == null){
             return false;
         }
@@ -25,50 +25,50 @@ public class DBContext {
 
     // Lazy loading
     // object sau khi duoc doc tu db len se duoc cache lai o day
-    public Boolean addFromDB(DomainObj obj){
+    public boolean addFromDB(DomainObj obj){
         if(obj == null){
             return false;
         }
-        currentRows.put(obj.getKey(),obj);
+        currentRows.put(obj.getPrimarykey(),obj);
         return true;
     }
 
     // Object duoc tao moi chua co trong db
     // Sau khi session luu nhung thay doi se submit du lieu moi o day vao db
-    public Boolean addNewRow(DomainObj obj){
+    public boolean addNewRow(DomainObj obj){
         if(obj == null){
             return false;
         }
 
-        if(currentRows.containsKey(obj.getKey())){ // Kiem tra lai mot lan nua
+        if(currentRows.containsKey(obj.getPrimarykey())){ // Kiem tra lai mot lan nua
             return false;
         }
-        newRows.put(obj.getKey(),obj);
+        newRows.put(obj.getPrimarykey(),obj);
 
         return true;
     }
 
     // Dua object vao danh sach xoa
     // Sau khi session luu nhung thay doi, cac object se bi xoa khoi db
-    public Boolean addRemovedRow(DomainObj obj){
-        if(obj == null || !obj.isLoaded()){
+    public boolean addRemovedRow(DomainObj obj){
+        if(obj == null ){
             return false;
         }
 
-        if(newRows.containsKey(obj.getKey())){
-            newRows.remove(obj.getKey());
+        if(newRows.containsKey(obj.getPrimarykey())){
+            newRows.remove(obj.getPrimarykey());
             return true;
         }
 
-        if(removedRows.containsKey(obj.getKey())){
+        if(removedRows.containsKey(obj.getPrimarykey())){
             return false;
         }
 
-        if(currentRows.containsKey(obj.getKey())){
-            currentRows.remove(obj.getKey());
+        if(currentRows.containsKey(obj.getPrimarykey())){
+            currentRows.remove(obj.getPrimarykey());
         }
 
-        removedRows.put(obj.getKey(),obj);
+        removedRows.put(obj.getPrimarykey(),obj);
 
         return true;
     }
@@ -91,4 +91,25 @@ public class DBContext {
 
         return true;
     }
+
+    public void log(){
+        System.out.print(String.format(">> Retrieve object "));
+
+        System.out.print("--- Existing object ---");
+        for(Object obj : currentRows.entrySet()){
+            System.out.print(obj);
+        }
+
+        System.out.print("--- Prepare to insert new object ---");
+        for(Object obj : newRows.entrySet()){
+            System.out.print(obj);
+        }
+
+        System.out.print("--- Delete object ---");
+        for(Object obj : removedRows.entrySet()){
+            System.out.print(obj);
+        }
+    }
+
+
 }

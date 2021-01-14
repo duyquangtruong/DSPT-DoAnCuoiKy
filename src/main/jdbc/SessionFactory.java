@@ -33,13 +33,13 @@ public class SessionFactory {
     }
 
     public boolean setTable(Class classT){
-        Table table = new Table(classT.getClass());
+        Table table = new Table(classT);
         if (tableMap.containsKey(classT)){
-            tableMap.replace(classT.getClass(),table);
+            tableMap.replace(classT,table);
             return true;
         }
         else if (checkHasTableInDB(table)) {
-            tableMap.put(classT.getClass(),table);
+            tableMap.put(classT,table);
             return true;
         }
         return false;

@@ -18,10 +18,6 @@ public abstract class SQLBuilder {
         return null;
     }
 
-    public static String addOffset(){
-        return null;
-    }
-
     public void addParam(String param){
         _queryParamList.add(param);
     }

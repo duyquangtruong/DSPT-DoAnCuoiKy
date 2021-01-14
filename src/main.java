@@ -4,17 +4,15 @@ import main.jdbc.Session;
 import main.jdbc.SessionFactory;
 
 import java.sql.SQLException;
-import java.text.Normalizer;
-import java.util.List;
-
+import DAO.first_table;
 public class main {
     public static void main(String[] args) throws SQLException {
         Configuration configuration = new Configuration();
         configuration.configure();
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.openSession();
-        List<Object[]> list = session.createQuery("Select * from first_table");
-
+        Object[] objects = session.load(first_table.class,"hah");
+        System.out.println(objects);
         // Generate file
 //        Configuration configuration = new Configuration();
 //        configuration.configure();

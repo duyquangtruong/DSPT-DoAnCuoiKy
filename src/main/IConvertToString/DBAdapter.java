@@ -13,10 +13,10 @@ public abstract class DBAdapter extends DBBaseQuery implements IConvertToString 
 
     @Override
     public String queryString(String select, String from, Map<String, Object> params) {
-        String where = "WHERE";
+        String where = "WHERE ";
         for (Map.Entry< String, Object> entry:
                 params.entrySet()) {
-            where+=entry.getKey() + "="+entry.getValue()+" AND ";
+            where+=entry.getKey() + " = "+entry.getValue()+" AND ";
         }
         return querySQL(select,from,where.substring(0,where.length()-5),"","","");
     }
@@ -26,11 +26,15 @@ public abstract class DBAdapter extends DBBaseQuery implements IConvertToString 
         return String.format("%s.%s",tableName,fieldName);
     }
 
+    @Override
+    public String parameter(String parameterId) {
+        return "@" + parameterId;
+    }
 
-    // Missing implementation:
+
     @Override
     public String table(String tableName) {
-        return null;
+        return String.format("%s",tableName);
     }
 
     @Override

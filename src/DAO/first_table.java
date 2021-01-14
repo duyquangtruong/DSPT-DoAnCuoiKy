@@ -13,6 +13,7 @@ public class first_table {
 	private String testrequired;
 
 	@ColumnDB("hah")
+	@PrimaryKey()
 	private String hah;
 
 }

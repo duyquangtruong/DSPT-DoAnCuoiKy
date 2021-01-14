@@ -34,6 +34,7 @@ public class DBMapper {
             databaseMetaData =connection.getMetaData();
 
             allTablesMetadatas = databaseMetaData.getTables(connection.getCatalog(),null,"%",new String[]{"TABLE"});
+            getAllTablesName();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

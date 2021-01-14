@@ -18,4 +18,6 @@ public abstract class DBFactory {
     public abstract DBAdapter getDBAdapter();
 
     public abstract DataTypeMapper getDBTypeMapper();
+
+    //public abstract BuiderDB getBuider();
 }

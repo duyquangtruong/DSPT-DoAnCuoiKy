@@ -5,7 +5,9 @@ import ReadXML.UtilDBTarget;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConnectionUtils {
     Connection dbConnection = null;
@@ -107,5 +109,28 @@ public class ConnectionUtils {
 
     public Connection getDbConnection(){
         return dbConnection;
+    }
+
+
+   // Empty implement:
+    public Object[] getReaderValue(){
+        return null;
+    }
+
+    public Object[] excuteQueryRow(String sqlQuery){
+        try {
+            if (executeQuery(sqlQuery) == true){
+                rs.next();
+                Map.Entry<String,Object> value = null;
+                List<Object> rowData = new ArrayList<>();
+                for (int columnIndex = 1; columnIndex <= rs.getMetaData().getColumnCount(); columnIndex++) {
+                    rowData.add(rs.getObject(columnIndex));
+                }
+                return rowData.toArray();
+            }
+        } catch (SQLException exception){
+            exception.printStackTrace();
+        }
+        return null;
     }
 }

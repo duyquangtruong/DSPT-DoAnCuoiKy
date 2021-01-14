@@ -76,10 +76,10 @@ public class Session {
     }
 
 
-    public Object get(Class clazz, Object id){
+    public Object[] load(Class clazz, Object id){
         Table table = sessionFactory.getTable(clazz);
         if (table != null){
-            conn.executeQuery(iConvertToString.queryString("*"));
+            return table.load(id);
         }
         return null;
     }
