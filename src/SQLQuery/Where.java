@@ -1,13 +1,13 @@
 package SQLQuery;
 
-public class WHQuery extends SQLBuilder {
+public class Where extends SQLBuilderHelper {
 
-    public WHQuery() {
+    public Where() {
     }
 
     @Override
     public void addParam(String param) {
-        if(_queryParamList.isEmpty() == false){
+        if(!_queryParamList.isEmpty()){
             super.addParam(param);
         }
     }

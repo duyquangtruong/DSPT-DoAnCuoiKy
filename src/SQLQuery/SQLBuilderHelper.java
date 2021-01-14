@@ -5,7 +5,7 @@ import main.jdbc.Session;
 
 import java.util.*;
 
-public abstract class SQLBuilder {
+public abstract class SQLBuilderHelper {
 
     protected List<String> _queryParamList = new ArrayList<>();
 
@@ -13,9 +13,9 @@ public abstract class SQLBuilder {
 
     protected abstract String paramToQuery();
 
-    // Missing implementation:
-    public static String getQueryString(){
-        return null;
+    public static String getQueryString(Select selectQuery, Where whQuery, GroupBy groupQuery, Having havingQuery, OrderBy orderByQuey, Join joinQuery, String tableName){
+        String src = String.format("%s %s", _converter.table(tableName), joinQuery.getParams());
+        return _converter.queryString(selectQuery.getParams(), whQuery.getParams(), src, orderByQuey.getParams(), groupQuery.getParams(), havingQuery.getParams());
     }
 
     public void addParam(String param){
@@ -26,6 +26,6 @@ public abstract class SQLBuilder {
         return (_queryParamList.isEmpty()) ? "" : paramToQuery();
     }
 
-    public SQLBuilder() {
+    public SQLBuilderHelper() {
     }
 }

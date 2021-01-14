@@ -1,8 +1,8 @@
 package SQLQuery;
 
-public class GroupQuery extends SQLBuilder{
+public class GroupBy extends SQLBuilderHelper {
 
-    public GroupQuery() {
+    public GroupBy() {
     }
 
     public void addGroupBy(String tableName, String fieldName){

@@ -1,8 +1,8 @@
 package SQLQuery;
 
-public class OrderByQuey extends SQLBuilder{
+public class OrderBy extends SQLBuilderHelper {
 
-    public OrderByQuey() {
+    public OrderBy() {
     }
 
     @Override
