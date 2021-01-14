@@ -1,4 +1,9 @@
-package SQLQuery;
+package SQLQuery.type;
+
+import SQLQuery.IQueryBuilder;
+import SQLQuery.Query;
+import SQLQuery.element.*;
+import SQLQuery.element.Select;
 
 public class MySQL implements IQueryBuilder {
 
@@ -13,7 +18,6 @@ public class MySQL implements IQueryBuilder {
         this.select = select;
         return this;
     }
-
 
     @Override
     public IQueryBuilder where(Where where) {
@@ -49,4 +53,5 @@ public class MySQL implements IQueryBuilder {
     public Query build() {
         return new Query(select, where, join, groupBy, having, orderBy);
     }
+
 }

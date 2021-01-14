@@ -1,5 +1,6 @@
-package SQLQuery;
+package SQLQuery.element;
 
+import SQLQuery.SQLBuilderHelper;
 import main.constants.Function;
 
 public class Having extends SQLBuilderHelper {

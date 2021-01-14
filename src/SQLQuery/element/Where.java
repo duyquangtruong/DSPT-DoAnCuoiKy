@@ -1,4 +1,6 @@
-package SQLQuery;
+package SQLQuery.element;
+
+import SQLQuery.SQLBuilderHelper;
 
 public class Where extends SQLBuilderHelper {
 
@@ -60,6 +62,6 @@ public class Where extends SQLBuilderHelper {
 
     @Override
     protected String paramToQuery() {
-        return "WHERE" + String.join("", _queryParamList);
+        return "WHERE" + String.join(" ", _queryParamList);
     }
 }

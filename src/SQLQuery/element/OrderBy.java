@@ -1,4 +1,6 @@
-package SQLQuery;
+package SQLQuery.element;
+
+import SQLQuery.SQLBuilderHelper;
 
 public class OrderBy extends SQLBuilderHelper {
 

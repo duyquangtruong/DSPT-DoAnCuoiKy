@@ -1,4 +1,6 @@
-package SQLQuery;
+package SQLQuery.element;
+
+import SQLQuery.SQLBuilderHelper;
 
 // SELECT Statement in query:
 public class Select extends SQLBuilderHelper {

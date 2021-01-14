@@ -1,5 +1,8 @@
 package SQLQuery;
 
+import SQLQuery.element.*;
+import SQLQuery.element.Select;
+
 public class Query {
     private Select select;
     private Where where;
@@ -7,6 +10,8 @@ public class Query {
     private GroupBy groupBy;
     private Having having;
     private OrderBy orderBy;
+
+
 
 
     public Query(Select select, Where where, Join join, GroupBy groupBy, Having having, OrderBy orderBy) {
