@@ -5,7 +5,8 @@ import SQLQuery.SQLBuilderHelper;
 // SELECT Statement in query:
 public class Select extends SQLBuilderHelper {
 
-    public Select() {
+    public Select(String columns) {
+
     }
 
     public void addTable(String tableName){

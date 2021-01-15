@@ -4,12 +4,31 @@ import SQLQuery.element.*;
 import SQLQuery.element.Select;
 
 public interface IQueryBuilder {
-    IQueryBuilder select(Select select);
-    IQueryBuilder where(Where whereQuery);
-    IQueryBuilder join(Join joinQuery);
-    IQueryBuilder groupBy(GroupBy groupByQuery);
-    IQueryBuilder having(Having havingQuery);
-    IQueryBuilder orderBy(OrderBy orderByQuery);
+    IQueryBuilder select(String... select);
+
+    IQueryBuilder whereEqualValue(String column, String value);
+    IQueryBuilder whereEqualValue(String column, int value);
+    IQueryBuilder whereEqualColumn(String column1, String column2);
+
+    IQueryBuilder whereGreater(String column, int value);
+    IQueryBuilder whereGreaterColumn(String column1, String column2);
+
+    IQueryBuilder whereGreaterOrEqual(String column, int value);
+    IQueryBuilder whereGreaterOrEqualColumn(String column1, String column2);
+
+    IQueryBuilder whereLessThan(String column, int value);
+    IQueryBuilder whereLessThanColumn(String column1, String column2);
+
+    IQueryBuilder whereLessThanOrEqual(String column, int value);
+    IQueryBuilder whereLessThanOrEqualColumn(String column1, String column2);
+
+    IQueryBuilder whereNotEqual(String column, int value);
+    IQueryBuilder whereNotEqualColumn(String column1, String column2);
+
+    IQueryBuilder from(String joinQuery);
+    IQueryBuilder groupBy(String groupByQuery);
+    IQueryBuilder having(String havingQuery);
+    IQueryBuilder orderBy(String orderByQuery);
 
     Query build();
 }

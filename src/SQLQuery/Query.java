@@ -4,27 +4,51 @@ import SQLQuery.element.*;
 import SQLQuery.element.Select;
 
 public class Query {
-    private Select select;
-    private Where where;
-    private Join join;
-    private GroupBy groupBy;
-    private Having having;
-    private OrderBy orderBy;
+    private String select;
+    private String where;
+    private String from;
+    private String groupBy;
+    private String having;
+    private String orderBy;
+
+    private String formattedQuery;
 
 
-
-
-    public Query(Select select, Where where, Join join, GroupBy groupBy, Having having, OrderBy orderBy) {
+    public Query(String select, String from, String where, String groupBy, String having, String orderBy,String formattedQuery) {
         this.select = select;
         this.where = where;
-        this.join = join;
+        this.from = from;
         this.groupBy = groupBy;
         this.having = having;
         this.orderBy = orderBy;
+        this.formattedQuery = formattedQuery;
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return formattedQuery;
+    }
+
+    public String getSelect() {
+        return select;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public String getWhere() {
+        return where;
+    }
+    public String getGroupBy(){
+        return groupBy;
+    }
+
+    public String getHaving() {
+        return having;
+    }
+
+    public String getOrderBy() {
+        return orderBy;
     }
 }
