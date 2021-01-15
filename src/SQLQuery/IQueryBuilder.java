@@ -2,6 +2,7 @@ package SQLQuery;
 
 import SQLQuery.element.*;
 import SQLQuery.element.Select;
+import main.constants.Function;
 
 public interface IQueryBuilder {
     IQueryBuilder select(String... select);
@@ -25,10 +26,10 @@ public interface IQueryBuilder {
     IQueryBuilder whereNotEqual(String column, int value);
     IQueryBuilder whereNotEqualColumn(String column1, String column2);
 
-    IQueryBuilder from(String joinQuery);
-    IQueryBuilder groupBy(String groupByQuery);
-    IQueryBuilder having(String havingQuery);
-    IQueryBuilder orderBy(String orderByQuery);
+    IQueryBuilder from(String... joinQuery);
+    IQueryBuilder groupBy(String table, String groupBy);
+    IQueryBuilder having(String tableName, String fieldName, Function function, String op, String param);
+    IQueryBuilder orderBy(String... orderByQuery);
 
     Query build();
 }

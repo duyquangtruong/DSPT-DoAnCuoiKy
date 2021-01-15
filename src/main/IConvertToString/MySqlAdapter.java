@@ -7,7 +7,7 @@ public class MySqlAdapter extends DBAdapter{
 
     @Override
     public String parameter(String parameterId) {
-        return null;
+        return parameterId;
     }
 
     @Override

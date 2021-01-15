@@ -13,6 +13,6 @@ public class GroupBy extends SQLBuilderHelper {
 
     @Override
     protected String paramToQuery() {
-        return "GROUP BY" + String.join(", ", _queryParamList);
+        return "GROUP BY " + String.join(", ", _queryParamList);
     }
 }

@@ -2,38 +2,44 @@ package SQLQuery.type;
 
 import SQLQuery.IQueryBuilder;
 import SQLQuery.Query;
+import SQLQuery.SQLBuilderHelper;
 import SQLQuery.element.*;
 import SQLQuery.element.Select;
+import main.constants.Function;
 
 public class MySQL implements IQueryBuilder {
 
-    private String select = "";
-    private String from = "";
-    private String where = "";
-    private String groupBy = "";
-    private String having = "";
-    private String orderBy = "";
+    private Select select = new Select();
+    private String where =  "";
+    private GroupBy groupBy = new GroupBy();
+    private Having having = new Having();
+    private OrderBy orderBy = new OrderBy();
 
     public IQueryBuilder select(String... select) {
         if(select.length <= 0){
             return this;
         }
-        Boolean isFirstElement = true;
         for( String column : select) {
             if (column.equals("*")) {
-                this.select = column;
                 break;
             }
             if (!column.equals("")) {
-                if (isFirstElement) {
-                    this.select += column;
-                }else {
-                    this.select += ", ";
-                    this.select += column;
-                }
+                this.select.addParam(column);
             }
         }
+        return this;
+    }
 
+    @Override
+    public IQueryBuilder from(String... tables) {
+        if(tables.length <= 0){
+            return this;
+        }
+        for( String table : tables) {
+            if (!table.equals("")) {
+                this.select.addTable(table);
+            }
+        }
         return this;
     }
 
@@ -116,60 +122,38 @@ public class MySQL implements IQueryBuilder {
     }
 
     @Override
-    public IQueryBuilder from(String from) {
-        this.from = from;
+    public IQueryBuilder groupBy(String table, String groupBy) {
+        this.groupBy.addGroupBy(table,groupBy);
         return this;
     }
 
     @Override
-    public IQueryBuilder groupBy(String groupBy) {
-        this.groupBy = groupBy;
+    public IQueryBuilder having(String tableName, String fieldName, Function function, String op, String param) {
+        this.having.addHaving(tableName,fieldName,function,op,param);
         return this;
     }
 
     @Override
-    public IQueryBuilder having(String having) {
-        this.having = having;
-        return this;
-    }
-
-    @Override
-    public IQueryBuilder orderBy(String orderBy) {
-        this.orderBy = orderBy;
+    public IQueryBuilder orderBy(String... orderBy) {
+        if(orderBy.length <= 0){
+            return this;
+        }
+        for( String column : orderBy) {
+            if (!column.equals("")) {
+                this.orderBy.addParam(column);
+            }
+        }
         return this;
     }
 
     @Override
     public Query build() {
 
-        if(select == null || select.equals("")){
+        if(select == null || select.equals("") || select.getTablesToString() == null || select.getTablesToString().equals("")){
             return null;
-        }
-        if(where == null || where.equals("")){
-            return null;
-        }
-        if(from == null || from.equals("")){
-            return null;
-        }
+       }
 
-        String formattedQuery = "";
-        formattedQuery += "SELECT " + this.select;
-        formattedQuery += " FROM " + this.from;
-        formattedQuery += " WHERE " + this.where;
-
-        if(this.groupBy != null && !this.groupBy.equals("")){
-            formattedQuery += " GROUP BY " + groupBy;
-        }
-
-        if(this.having == null || this.having.equals("") || this.orderBy == null || this.orderBy.equals("")) {
-            return new Query(select, from, where, groupBy, "", "", formattedQuery);
-        }
-
-        formattedQuery += " HAVING " + orderBy;
-        formattedQuery += " ORDER BY " + orderBy;
-
-
-        return new Query(select, from, where, groupBy, having, orderBy, formattedQuery);
+        return new Query(select, where, groupBy, having, orderBy);
     }
 
 }

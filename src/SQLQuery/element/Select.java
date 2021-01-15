@@ -5,12 +5,12 @@ import SQLQuery.SQLBuilderHelper;
 // SELECT Statement in query:
 public class Select extends SQLBuilderHelper {
 
-    public Select(String columns) {
+    public Select() {
 
     }
 
     public void addTable(String tableName){
-        _queryParamList.add(String.format("%s", _converter.table(tableName)));
+        _queryTableList.add(tableName);
     }
 
     @Override

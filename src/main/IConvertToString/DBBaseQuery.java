@@ -8,7 +8,7 @@ import java.sql.SQLException;
 abstract public class DBBaseQuery {
     public String querySQL(String select, String from,String where, String order
             , String groupBy, String having){
-        return String.format("SELECT %s FROM %s %s %s %s %s",select,from,where,order,groupBy,having);
+        return String.format("SELECT %s FROM %s WHERE %s %s %s %s",select,from,where,order,groupBy,having);
     }
 
     public PreparedStatement preparedStatementQuery(Connection conn, String select, String from, String where, String order
@@ -23,6 +23,7 @@ abstract public class DBBaseQuery {
             stmt.setString(4,order);
             stmt.setString(5,groupBy);
             stmt.setString(6,having);
+            System.out.println();
         } catch (SQLException e) {
             e.printStackTrace();
         }

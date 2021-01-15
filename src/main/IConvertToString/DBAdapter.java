@@ -7,8 +7,8 @@ import java.util.Map;
 public abstract class DBAdapter extends DBBaseQuery implements IConvertToString {
 
     @Override
-    public String queryString(String select, String where, String from, String order, String groupBy, String having) {
-        return querySQL(select, where, from, order, groupBy, having);
+    public String queryString(String select, String from, String where, String order, String groupBy, String having) {
+        return querySQL(select, from, where, order, groupBy, having);
     }
 
     @Override
