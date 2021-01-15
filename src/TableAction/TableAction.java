@@ -1,5 +1,6 @@
 package TableAction;
 
+import TableT.DataTypeMapper.DataTypeMapper;
 import TableT.Table.Column;
 import main.IConvertToString.IConvertToString;
 import main.jdbc.ConnectionUtils;
@@ -11,9 +12,9 @@ import java.util.Map;
 
 public abstract class TableAction {
     protected Map<String, Column> columns;
-    protected ConnectionUtils cnn;
     protected String tableName;
     protected String primaryKey;
+    protected DataTypeMapper dataTypeMapper;
     public IConvertToString getIConvertToString()
     {
         return Session.getSession().getConvertToString();
@@ -21,7 +22,7 @@ public abstract class TableAction {
 
     //GetFieldValue
     protected abstract String getSQL(Map<String,String> fields);
-    private Map<String, String> getField(Object obj){
+    public Map<String, String> getField(Object obj){
         if (obj==null){
             return null;
         }
@@ -29,13 +30,14 @@ public abstract class TableAction {
         for (Map.Entry<String,Column> column:columns.entrySet()){
             try {
                 Field field = obj.getClass().getDeclaredField(column.getKey());
+                field.setAccessible(true);
                 Object value = field.get(obj);
                 if (value==null && column.getValue().getRequired()==true){
                     return null;
                 }
                 String name = column.getValue().getColumnName();
                 String vl=value.toString();
-                if(column.getValue().getColumnType().equals("text")){
+                if(dataTypeMapper.getClassType(column.getValue().getColumnType()).equals("String")){
                     vl = "\'"+vl+"\'";
                 }
                 fields.put(name,vl);
@@ -48,24 +50,10 @@ public abstract class TableAction {
 
     }
 
-    public TableAction(Map<String, Column> columns, ConnectionUtils cnn, String tableName, String primaryKey) {
+    public TableAction(Map<String, Column> columns, String tableName, String primaryKey) {
         this.columns = columns;
-        this.cnn = cnn;
         this.tableName = tableName;
         this.primaryKey = primaryKey;
+        dataTypeMapper = Session.getSession().getSessionFactory().getDbFactory().getDBTypeMapper();
     }
-
-    public Boolean execute(Object obj){
-        if (obj == null){
-            return false;
-        }
-        Map<String,String> fields = getField(obj);
-        if (fields==null){
-            return false;
-        }
-        String sql = getSQL(fields);
-        return cnn.executeQuery(sql);
-    }
-
-
 }

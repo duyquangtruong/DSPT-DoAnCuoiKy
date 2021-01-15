@@ -13,12 +13,14 @@ public class SessionFactory {
     private DBMapper dbMapper = null;
     private Map<Class,Table> tableMap;
     private DBFactory dbFactory;
+    UtilDBTarget dbAdapter;
 
     public SessionFactory(UtilDBTarget dbAdapter){
-        dbFactory = DBFactory.getDBFactory(dbAdapter.getUtil().getDBName());
-        Session.openSession(dbAdapter, this);
-        dbMapper = new DBMapper(Session.session);
-        tableMap = new HashMap<>();
+        this.dbFactory = DBFactory.getDBFactory(dbAdapter.getUtil().getDBName());
+        this.dbAdapter = dbAdapter;
+        openSession();
+        this.dbMapper = new DBMapper(Session.session);
+        this.tableMap = new HashMap<>();
     }
 
     public Table getTable(Class classT){
@@ -50,7 +52,7 @@ public class SessionFactory {
     }
 
     public Session openSession(){
-        return Session.session;
+        return Session.openSession(dbAdapter, this);
     }
 
     public DBFactory getDbFactory() {

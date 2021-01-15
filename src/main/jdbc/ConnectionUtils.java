@@ -81,6 +81,15 @@ public class ConnectionUtils {
         }
     }
 
+    public Boolean execute(String sqlQuery) {
+        try {
+            return statement.execute(sqlQuery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void executePreparedStatement(PreparedStatement pst){
         try {
             rs = pst.executeQuery();
@@ -89,15 +98,15 @@ public class ConnectionUtils {
         }
     }
 
-    public List<Object[]> getAllRows() {
+    public List<Map<String,Object>> getAllRows() {
         try {
-            List<Object[]> rows = new ArrayList<>();
+            List<Map<String,Object>> rows = new ArrayList<>();
             while (rs.next()) {
-                List<Object> rowData = new ArrayList<>();
+                Map<String,Object> rowData = new HashMap<>();
                 for (int columnIndex = 1; columnIndex <= rs.getMetaData().getColumnCount(); columnIndex++) {
-                    rowData.add(rs.getObject(columnIndex));
+                    rowData.put(rs.getMetaData().getColumnName(columnIndex),rs.getObject(columnIndex));
                 }
-                rows.add(rowData.toArray());
+                rows.add(rowData);
             }
             return rows;
 
@@ -117,16 +126,16 @@ public class ConnectionUtils {
         return null;
     }
 
-    public Object[] excuteQueryRow(String sqlQuery){
+    public Map<String,Object> excuteQueryRow(String sqlQuery){
         try {
             if (executeQuery(sqlQuery) == true){
                 rs.next();
-                Map.Entry<String,Object> value = null;
-                List<Object> rowData = new ArrayList<>();
+                Map<String,Object> data = new HashMap<>();
                 for (int columnIndex = 1; columnIndex <= rs.getMetaData().getColumnCount(); columnIndex++) {
-                    rowData.add(rs.getObject(columnIndex));
+
+                    data.put(rs.getMetaData().getColumnName(columnIndex),rs.getObject(columnIndex));
                 }
-                return rowData.toArray();
+                return data;
             }
         } catch (SQLException exception){
             exception.printStackTrace();

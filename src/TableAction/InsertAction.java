@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class InsertAction extends TableAction {
 
-    public InsertAction(Map<String, Column> columns, ConnectionUtils cnn, String tableName, String primaryKey) {
-        super(columns, cnn, tableName, primaryKey);
+    public InsertAction(Map<String, Column> columns,  String tableName, String primaryKey) {
+        super(columns, tableName, primaryKey);
     }
 
     @Override

@@ -2,6 +2,7 @@ package TableT.Table;
 
 import Generator.DBContext.DBContext;
 import Generator.DBContext.DomainObj;
+import SQLQuery.IQueryBuilder;
 import TableAction.DeleteAction;
 import TableAction.InsertAction;
 import TableAction.TableAction;
@@ -22,6 +23,8 @@ import main.jdbc.DBFactory;
 import main.jdbc.Session;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Table<T> {
@@ -32,6 +35,7 @@ public class Table<T> {
     UpdateAction updateAction = null;
     InsertAction insertAction = null;
     DeleteAction deleteAction = null;
+    private Map<String, Field> fields = new HashMap<>();
 
     public Table(Class<T> tclass) {
 
@@ -39,6 +43,14 @@ public class Table<T> {
 
         converter = Session.getSession().getConvertToString();
         connector = Session.getSession().getConn();
+        List<Field> fieldList = Arrays.asList(tclass.getDeclaredFields());
+        for (Field field : fieldList) {
+            ColumnDB col = field.getAnnotation(ColumnDB.class);
+            if (col != null) {
+                field.setAccessible(true);
+                fields.put(col.value(), field);
+            }
+        }
         mapTable();
     }
 
@@ -212,11 +224,51 @@ public class Table<T> {
 
     }
 
-    public Object[] load(Object id){
+    public T load(Object id){
         Map<String,Object> params = new HashMap<String,Object>();
         params.put(getPrimaryKey(),id);
         String queryString = converter.queryString("*",getTableName(),params);
-        return connector.excuteQueryRow(queryString);
+        T dto = null;
+        try {
+            dto = map(connector.excuteQueryRow(queryString));
+            return dto;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<T> loadAll(){
+        Map<String,Object> params = new HashMap<String,Object>();
+        String queryString = converter.queryString("*",getTableName(),params);
+        T dto = null;
+        try {
+            if (connector.executeQuery(queryString))
+            {
+                List<T> dtos = map(connector.getAllRows());
+                return dtos;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<T> excuteBuilder(IQueryBuilder builder){
+        Map<String,Object> params = new HashMap<String,Object>();
+        T dto = null;
+        try {
+            if (connector.executeQuery(builder.toString()))
+            {
+                List<T> dtos = map(connector.getAllRows());
+                return dtos;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     // Not finish:
 //    public void loadData(DomainObj obj){
@@ -400,34 +452,62 @@ public class Table<T> {
         dbContext.log();
     }
 
-    private void doWork(List<Object> objs, TableAction action) {
-        for(Object obj : objs){
-            action.execute(obj);
+    public boolean save(T instance){
+        TableAction tableAction = new InsertAction(columns,getTableName(),getPrimaryKey());
+        Map<String,String> fieldValues = tableAction.getField(instance);
+        String insertQuery = converter.insertString(getTableName(),fieldValues);
+        return connector.execute(insertQuery);
+    }
+
+    public boolean delete(T instance){
+        TableAction tableAction = new DeleteAction(columns,getTableName(),getPrimaryKey());
+        Map<String,String> fieldValues = tableAction.getField(instance);
+        String deleteString = converter.deleteString(getTableName(),getPrimaryKey(),fieldValues);
+        return connector.execute(deleteString);
+    }
+
+    public boolean update(T instance){
+        TableAction tableAction = new DeleteAction(columns,getTableName(),getPrimaryKey());
+        Map<String,String> fieldValues = tableAction.getField(instance);
+        String updateString = converter.updateString(getTableName(),getPrimaryKey(),fieldValues);
+        return connector.execute(updateString);
+    }
+
+    public T map(Map<String, Object> row) throws SQLException {
+        try {
+            T dto = (T) tobject.getConstructor().newInstance();
+            for (Map.Entry<String, Object> entity : row.entrySet()) {
+                if (entity.getValue() == null) {
+                    continue;  // Don't set DBNULL
+                }
+                String column = entity.getKey();
+                Field field = fields.get(column);
+                if (field != null) {
+                    field.set(dto, convertInstanceOfObject(entity.getValue()));
+                }
+            }
+            return dto;
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
+            e.printStackTrace();
+            throw new SQLException("Problem with data Mapping. See logs.");
         }
     }
 
-    public void commit(){
-        // Update
-/*        if (updateAction == null)
-        {
-            updateAction = new UpdateAction(columns, connector, tableName, getPrimaryKey());
-        }
-        doWork(DBContext.getDirtyList(), updateAction);*/
+    public List<T> map(List<Map<String, Object>> rows) throws SQLException {
+        List<T> list = new LinkedList<>();
 
-        // Insert
-        if (insertAction == null)
-        {
-            insertAction = new InsertAction(columns, connector, tableName, getPrimaryKey());
+        for (Map<String, Object> row : rows) {
+            list.add(map(row));
         }
-        doWork(dbContext.getNewRowsList(), insertAction);
 
-        // Delete
-        if (deleteAction == null)
-        {
-            deleteAction = new DeleteAction(columns, connector, tableName, getPrimaryKey());
+        return list;
+    }
+
+    private T convertInstanceOfObject(Object o) {
+        try {
+            return (T) o;
+        } catch (ClassCastException e) {
+            return null;
         }
-        doWork(dbContext.getRemovedRowsList(), deleteAction);
-
-        dbContext.clearChanges();
     }
 }

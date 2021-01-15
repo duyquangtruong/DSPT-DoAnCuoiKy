@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class DeleteAction extends TableAction {
 
-    public DeleteAction(Map<String, Column> columns, ConnectionUtils cnn, String tableName, String primaryKey) {
-        super(columns, cnn, tableName, primaryKey);
+    public DeleteAction(Map<String, Column> columns, String tableName, String primaryKey) {
+        super(columns, tableName, primaryKey);
     }
 
     @Override

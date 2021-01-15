@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class UpdateAction extends TableAction {
 
-    public UpdateAction(Map<String, Column> columns, ConnectionUtils cnn, String tableName, String primaryKey) {
-        super(columns, cnn, tableName, primaryKey);
+    public UpdateAction(Map<String, Column> columns, String tableName, String primaryKey) {
+        super(columns, tableName, primaryKey);
     }
 
     @Override

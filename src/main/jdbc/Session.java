@@ -1,12 +1,15 @@
 package main.jdbc;
 
 import ReadXML.UtilDBTarget;
+import SQLQuery.IQueryBuilder;
 import TableT.Table.Table;
 import main.IConvertToString.IConvertToString;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class Session {
+public class Session<T> {
     static Session session = null;
     private IConvertToString iConvertToString;
     private SessionFactory sessionFactory = null;
@@ -33,7 +36,7 @@ public class Session {
     };
 
 
-    public static void openSession(UtilDBTarget dbAdapter, SessionFactory sessionFactory){
+    public static Session openSession(UtilDBTarget dbAdapter, SessionFactory sessionFactory){
         if (session==null){
             session = new Session(dbAdapter,sessionFactory);
         }
@@ -41,6 +44,7 @@ public class Session {
             session.close();
             session = new Session(dbAdapter, sessionFactory);
         }
+        return session;
     }
 
     public SessionFactory getSessionFactory(){
@@ -52,7 +56,7 @@ public class Session {
     }
 
 
-    private void close() {
+    public void close() {
         conn.close();
     }
 
@@ -67,16 +71,7 @@ public class Session {
         return  conn.getAllRows();
     }
 
-    public boolean save(Object util){
-        Table table = sessionFactory.getTable(util.getClass());
-        if (table!=null){
-
-        }
-        return true;
-    }
-
-
-    public Object[] load(Class clazz, Object id){
+    public Object load(Class clazz, Object id){
         Table table = sessionFactory.getTable(clazz);
         if (table != null){
             return table.load(id);
@@ -84,4 +79,50 @@ public class Session {
         return null;
     }
 
+    public List<T> loadAll(Class clazz){
+        Table table = sessionFactory.getTable(clazz);
+        if (table != null){
+            return table.loadAll();
+        }
+        return null;
+    }
+
+    public List<Map<String,Object>> excuteQuery(String sqlQuery){
+        if (conn.executeQuery(sqlQuery)){
+            return conn.getAllRows();
+        }
+        return null;
+    }
+
+    public List<T> excuteBuilder(Class clazz, IQueryBuilder builder){
+        Table table = sessionFactory.getTable(clazz);
+        if (table != null){
+            return table.excuteBuilder(builder);
+        }
+        return null;
+    }
+
+    public boolean save(T instance){
+        Table table = sessionFactory.getTable(instance.getClass());
+        if (table != null){
+            return table.save(instance);
+        }
+        return false;
+    }
+
+    public boolean delete(T instance){
+        Table table = sessionFactory.getTable(instance.getClass());
+        if (table != null){
+            return table.delete(instance);
+        }
+        return false;
+    }
+
+    public boolean update(T instance){
+        Table table = sessionFactory.getTable(instance.getClass());
+        if (table != null){
+            return table.update(instance);
+        }
+        return false;
+    }
 }
