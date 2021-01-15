@@ -41,4 +41,14 @@ public class SQLDataTypeMapper extends DataTypeMapper{
         dBtoClass.put("varchar","String");
     }
 
+    @Override
+    protected String GetPrimaryKeySQL(String tableName) {
+        return null;
+    }
+
+    @Override
+    protected String GetTableForeignKeysSQL(String tableName) {
+        return null;
+    }
+
 }

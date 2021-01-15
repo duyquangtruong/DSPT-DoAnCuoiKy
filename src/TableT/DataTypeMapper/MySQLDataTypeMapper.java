@@ -22,4 +22,14 @@ public class MySQLDataTypeMapper extends DataTypeMapper{
 
     }
 
+    @Override
+    protected String GetPrimaryKeySQL(String tableName) {
+        return null;
+    }
+
+    @Override
+    protected String GetTableForeignKeysSQL(String tableName) {
+        return "SELECT k.COLUMN_NAME,  k.REFERENCED_TABLE_NAME FROM information_schema.TABLE_CONSTRAINTS i LEFT JOIN information_schema.KEY_COLUMN_USAGE k ON i.CONSTRAINT_NAME = k.CONSTRAINT_NAME  WHERE i.CONSTRAINT_TYPE = 'FOREIGN KEY'  AND i.TABLE_SCHEMA = DATABASE() AND i.TABLE_NAME = '" + tableName + "'";
+    }
+
 }

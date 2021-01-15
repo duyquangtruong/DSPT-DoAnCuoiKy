@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DataTypeMapper {
+public abstract class DataTypeMapper {
     protected Map<String,String> classToDB;
     protected Map<String,String> dBtoClass;
 
@@ -32,5 +32,8 @@ public class DataTypeMapper {
 
         return "Object";
     }
+    protected abstract String GetPrimaryKeySQL(String tableName);
+
+    protected abstract String GetTableForeignKeysSQL(String tableName);
 
 }

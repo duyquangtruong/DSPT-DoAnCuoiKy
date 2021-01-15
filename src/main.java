@@ -17,16 +17,18 @@ public class main {
         configuration.configure();
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.openSession();
-//        first_table object = (first_table) session.load(first_table.class,"hah");
-//        List<first_table> obs = session.loadAll(first_table.class);
+        first_table object = (first_table) session.load(first_table.class,"aaa");
+        List<first_table> obs = session.loadAll(first_table.class);
 //        List<Object> obs2 = session.excuteQuery("SELECT * FROM first_table");
-//        System.out.println(obs2);
-
-        first_table ft = new first_table();
-        ft.setHah("test12");
-        ft.setField_2(123);
-        ft.setTestrequired("120");
-        session.update(ft);
+        object.setField_2(123);
+        object.setTestrequired("120");
+        session.update(object);
+        first_table object2 = (first_table) session.load(first_table.class,"aaa");
+//        first_table ft = new first_table();
+//        ft.setHah("test12");
+//        ft.setField_2(123);
+//        ft.setTestrequired("120");
+//        session.save(ft);
         session.close();
         // Generate file
 //        Configuration configuration = new Configuration();

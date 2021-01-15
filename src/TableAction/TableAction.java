@@ -21,7 +21,6 @@ public abstract class TableAction {
     }
 
     //GetFieldValue
-    protected abstract String getSQL(Map<String,String> fields);
     public Map<String, String> getField(Object obj){
         if (obj==null){
             return null;

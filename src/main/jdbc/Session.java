@@ -1,5 +1,6 @@
 package main.jdbc;
 
+import Generator.DBContext.DomainObj;
 import ReadXML.UtilDBTarget;
 import SQLQuery.IQueryBuilder;
 import TableT.Table.Table;

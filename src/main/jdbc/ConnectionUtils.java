@@ -128,11 +128,9 @@ public class ConnectionUtils {
 
     public Map<String,Object> excuteQueryRow(String sqlQuery){
         try {
-            if (executeQuery(sqlQuery) == true){
-                rs.next();
+            if (executeQuery(sqlQuery) == true && rs.next()){
                 Map<String,Object> data = new HashMap<>();
                 for (int columnIndex = 1; columnIndex <= rs.getMetaData().getColumnCount(); columnIndex++) {
-
                     data.put(rs.getMetaData().getColumnName(columnIndex),rs.getObject(columnIndex));
                 }
                 return data;

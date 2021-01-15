@@ -16,7 +16,7 @@ public abstract class DBAdapter extends DBBaseQuery implements IConvertToString 
         String where = "WHERE ";
         for (Map.Entry< String, Object> entry:
                 params.entrySet()) {
-            where+=entry.getKey() + " = "+entry.getValue()+" AND ";
+            where+=entry.getKey() + " = '"+entry.getValue()+"' AND ";
         }
         return querySQL(select,from,where.substring(0,where.length()-5),"","","");
     }

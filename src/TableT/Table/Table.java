@@ -1,7 +1,6 @@
 package TableT.Table;
 
 import Generator.DBContext.DBContext;
-import Generator.DBContext.DomainObj;
 import SQLQuery.IQueryBuilder;
 import TableAction.DeleteAction;
 import TableAction.InsertAction;
@@ -15,11 +14,9 @@ import TableT.Annotation.HasMany;
 import TableT.Annotation.HasOne;
 import TableT.Annotation.TableDB;
 import TableT.DataTypeMapper.DataTypeMapper;
-import DAO.first_table;
 
 import main.IConvertToString.IConvertToString;
 import main.jdbc.ConnectionUtils;
-import main.jdbc.DBFactory;
 import main.jdbc.Session;
 
 import java.lang.reflect.Field;
@@ -36,6 +33,15 @@ public class Table<T> {
     InsertAction insertAction = null;
     DeleteAction deleteAction = null;
     private Map<String, Field> fields = new HashMap<>();
+
+    private String tableName;
+    private String primaryKeyDB="";
+    //DB Context
+    DBContext dbContext = new DBContext<T>();
+
+    Map<String, Column> columns ;
+    Map<String, String> hasOne ;
+    Map<String, String> hasMany ;
 
     public Table(Class<T> tclass) {
 
@@ -58,17 +64,6 @@ public class Table<T> {
         return tobject;
     }
     public ConnectionUtils getConnector(){return connector;}
-
-    private String tableName;
-    private String primaryKeyDB="";
-
-    //DB Context
-    DBContext dbContext = new DBContext();
-
-    Map<String, Column> columns ;
-    Map<String, String> hasOne ;
-    Map<String, String> hasMany ;
-
 
     public Table(String name)
     {
@@ -103,7 +98,6 @@ public class Table<T> {
     public String getPrimaryKey() {
         if(columns!=null){
             for (Map.Entry<String,Column> column:columns.entrySet()){
-//            System.out.println(column.getValue().getPrimaryKey());
                 if(column.getValue().getPrimaryKey()==true){
                     return column.getValue().getColumnName();
                 }
@@ -177,7 +171,7 @@ public class Table<T> {
             boolean isPrimaryKey = false;
             boolean isRequired=false;
             ColumnDB columnDB = field.getDeclaredAnnotation(ColumnDB.class);
-            if(columnDB !=null ){
+            if(columnDB != null ){
                columnName= columnDB.value();
             }
             PrimaryKey primaryKey = field.getDeclaredAnnotation(PrimaryKey.class);
@@ -225,12 +219,17 @@ public class Table<T> {
     }
 
     public T load(Object id){
+        T dto = GetInstance(id);
+        if (dto != null){
+            return dto;
+        }
+
         Map<String,Object> params = new HashMap<String,Object>();
         params.put(getPrimaryKey(),id);
         String queryString = converter.queryString("*",getTableName(),params);
-        T dto = null;
         try {
             dto = map(connector.excuteQueryRow(queryString));
+            dbContext.addRowsCache(getPrimaryValue(dto),dto);
             return dto;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -270,77 +269,6 @@ public class Table<T> {
         }
         return null;
     }
-    // Not finish:
-//    public void loadData(DomainObj obj){
-//        if(dbContext.isExisted(obj.getKey()))
-//            return;
-//        HashMap<String, Object> sqlParams = new HashMap<String, Object>();
-//        sqlParams.put(getPrimaryKey(), obj.getKey());
-//        String sqlQuery = converter.queryString(getDataSQL(), tableName, sqlParams);
-//      //  connector.executeQuery(sqlQuery, sqlParams);
-//        boolean isExisted = false;
-//
-//        // Missing condition:
-//        while(true){
-//            int i = 0;
-//            //Object[] reader = connector.GetReaderValue();
-///*            foreach (string fieldName in columns.Keys)
-//            {
-//                PropertyInfo propertyInfo = obj.GetType().GetProperty(fieldName);
-//                propertyInfo.SetValue(obj, Convert.ChangeType(reader[i++], propertyInfo.PropertyType));
-//            }
-//            foundInDB = true;*/
-//        }
-//
-//        if (isExisted == true) //Neu tim thay trong DB, them vao DS nhung object da co
-//            dbContext.addFromDB(obj);
-//        else //Neu khong co trong DB, object moi, them vao DS nhung object moi
-//            dbContext.addNewRow(obj);
-//        // HasOne
-//        if (hasOne.size() > 0)
-//        {
-//            for (Map.Entry<String, String> tmp : hasOne.entrySet())
-//            {
-//               /* Session session = Session.getSession();
-//                MethodInfo method = session..GetMethod("Table").MakeGenericMethod(obj.GetType().GetProperty(tmp.Key).PropertyType);
-//                var table = method.Invoke(session, null);
-//
-//                method = table.GetType().GetMethod("GetPrimaryKeyName");
-//                var priCol = method.Invoke(table,null);
-//
-//                // get foreignKey
-//
-//                string fieldName = this.GetForeignKeyFieldName(tmp.Value);
-//
-//                object fieldValue = obj.GetType().GetProperty(fieldName).GetValue(obj);
-//
-//                method = table.GetType().GetMethod("FindOneHaveValue");
-//                var list = method.Invoke(table, new object[] { priCol, fieldValue });
-//
-//                PropertyInfo propertyInfo = obj.GetType().GetProperty(tmp.Key);
-//                propertyInfo.SetValue(obj, Convert.ChangeType(list, propertyInfo.PropertyType));*/
-//            }
-//        }
-//
-//        // has many
-//        if (hasMany.size() > 0)
-//        {
-//            for (Map.Entry<String, String> tmp : hasMany.entrySet())
-//            {
-//                Session session = Session.getSession();
-//           /*     MethodInfo method = session.GetType().GetMethod("Table").MakeGenericMethod(obj.GetType().GetProperty(tmp.Key).PropertyType.GetGenericArguments()[0]);
-//                var table = method.Invoke(session, null);
-//                method = table.GetType().GetMethod("GetRefColumnName");
-//                var refCol = method.Invoke(table, new object[] { tableName });
-//                method = table.GetType().GetMethod("FindAllHaveValue");
-//                var list = method.Invoke(table, new object[] { refCol, obj.getKey() });
-//
-//                PropertyInfo propertyInfo = obj.GetType().GetProperty(tmp.Key);
-//                propertyInfo.SetValue(obj, Convert.ChangeType(list, propertyInfo.PropertyType));*/
-//            }
-//        }
-//    }
-
 
     public String getForeignKeyFieldName(String refTableName){
         for (Map.Entry<String, Column> column: columns.entrySet()) {
@@ -412,50 +340,30 @@ public class Table<T> {
         return null;
     }
 
-    // Error:
-//    private List findByQuery(String query){
-//        connector.executeQuery(query);
-//        List rs = new ArrayList();
-//
-//        // Check reader.read():
-//        while(true){
-//            // get Instance of T
-//            Class tmp = GetInstance(connector.getReaderValue()[0]);
-//            rs.add(tmp);
-//        }
-//        return rs;
-//    }
-
     public List<T> FindAll(String queryString, HashMap<String, Object> parameters)
     {
         return findByQuery(queryString, parameters);
     }
 
-
-    // Error
     public T GetInstance(Object key)
     {
         if(dbContext.isExisted(key)){
             return (T)dbContext.getRowByKey(key);
         }
-
         return null;
     }
+
 
     // Error
     public List<Object[]> ExecuteQuery(String queryString, String tableName, HashMap<String, Object> queryParameters) {
         return null;
     }
 
-    public void log(){
-        System.out.print(String.format(">> Working at table: %s", tableName));
-        dbContext.log();
-    }
-
     public boolean save(T instance){
         TableAction tableAction = new InsertAction(columns,getTableName(),getPrimaryKey());
         Map<String,String> fieldValues = tableAction.getField(instance);
         String insertQuery = converter.insertString(getTableName(),fieldValues);
+        dbContext.addRowsCache(getPrimaryValue(instance),instance);
         return connector.execute(insertQuery);
     }
 
@@ -463,6 +371,11 @@ public class Table<T> {
         TableAction tableAction = new DeleteAction(columns,getTableName(),getPrimaryKey());
         Map<String,String> fieldValues = tableAction.getField(instance);
         String deleteString = converter.deleteString(getTableName(),getPrimaryKey(),fieldValues);
+        Object primaryKey = getPrimaryValue(instance);
+        if (dbContext.isExisted(primaryKey))
+        {
+            dbContext.removeRowsCache(getPrimaryValue(instance));
+        }
         return connector.execute(deleteString);
     }
 
@@ -470,10 +383,16 @@ public class Table<T> {
         TableAction tableAction = new DeleteAction(columns,getTableName(),getPrimaryKey());
         Map<String,String> fieldValues = tableAction.getField(instance);
         String updateString = converter.updateString(getTableName(),getPrimaryKey(),fieldValues);
+        Object primaryKey = getPrimaryValue(instance);
+        if (dbContext.isExisted(primaryKey)){
+            dbContext.removeRowsCache(primaryKey);
+            dbContext.addRowsCache(primaryKey,instance);
+        }
         return connector.execute(updateString);
     }
 
     public T map(Map<String, Object> row) throws SQLException {
+        if (row == null) return null;
         try {
             T dto = (T) tobject.getConstructor().newInstance();
             for (Map.Entry<String, Object> entity : row.entrySet()) {
@@ -509,5 +428,22 @@ public class Table<T> {
         } catch (ClassCastException e) {
             return null;
         }
+    }
+    //get value primary
+    public Object getPrimaryValue(Object obj) {
+        Field field = null;
+        try {
+            field = obj.getClass().getDeclaredField(getPrimaryKey());
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        field.setAccessible(true);
+        try {
+            return field.get(obj);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -1,5 +1,6 @@
 package DAO;
 
+import Generator.DBContext.DomainObj;
 import TableT.Annotation.Column.*;
 import TableT.Annotation.*;
 

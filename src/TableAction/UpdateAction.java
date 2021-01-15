@@ -11,8 +11,4 @@ public class UpdateAction extends TableAction {
         super(columns, tableName, primaryKey);
     }
 
-    @Override
-    protected String getSQL(Map<String, String> fields) {
-        return getIConvertToString().updateString(tableName,primaryKey,fields);
-    }
 }
