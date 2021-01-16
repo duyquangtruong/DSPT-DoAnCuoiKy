@@ -24,7 +24,6 @@ public class Writer {
 
     public static void writeClass(String className, DBMapper mapper){
         try {
-            System.out.println(srcOutput);
             File directory = new File(srcOutput);
             if (!directory.exists()){
                 directory.mkdir();
@@ -36,7 +35,6 @@ public class Writer {
             FileWriter out =  new FileWriter(myObj);
             BufferedWriter classFile = new BufferedWriter(out);
             DatabaseMetaData databaseMetaData = mapper.getDatabaseMetaData();
-            ResultSet allTableMetadata = mapper.getAllTablesMetadatas();
             List<String> primaryKeys = mapper.getPrimaryKey(className);
             List<String> foreignKeys = mapper.getForeignKey(className);
             HashMap<String,String> attributes = mapper.getTableAttributes(className);
@@ -51,13 +49,6 @@ public class Writer {
 
             // Tao cac thuoc tinh cho class
             for (String attributeName:attributes.keySet()) {
-
-                String catalog = allTableMetadata.getString("TABLE_CAT");
-                String schema = allTableMetadata.getString("TABLE_SCHEM");
-                ResultSet resultSet = databaseMetaData.getAttributes(catalog,className,null,attributeName);
-                if(resultSet== null) {
-                    return;
-                }
 
                 classFile.write("\t@ColumnDB(\""+attributeName+"\")\n");
 
@@ -79,12 +70,22 @@ public class Writer {
                 classFile.write("\tprivate "+dataTypeMapper.getClassType(attributes.get(attributeName)) +" "+ Standardizer.NameStandardize(attributeName)+";\n\n");
             }
 
-            // Them create options ben duoi
+            // Them getter setter cho cac thuoc tinh
+            for (String attributeName:attributes.keySet()){
+                String standardName = Standardizer.NameStandardize(attributeName);
+                String firstLetterCapitalize = standardName.substring(0, 1).toUpperCase() + standardName.substring(1);
+                String attrType = dataTypeMapper.getClassType(attributes.get(attributeName));
 
+                classFile.write(String.format("\tpublic %s set%s() { return this.%s; }\n\n"
+                        ,attrType,firstLetterCapitalize, standardName));
 
+                classFile.write(String.format("\tpublic void set%s(%s value) { this.%s = value; }\n\n"
+                        ,firstLetterCapitalize,attrType, standardName));
+            }
 
             classFile.write("}");
             classFile.close();
+
         } catch (IOException | SQLException e) {
             e.printStackTrace();
         }
