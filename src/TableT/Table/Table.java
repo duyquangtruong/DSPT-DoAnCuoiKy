@@ -394,6 +394,33 @@ public class Table<T> {
         return connector.execute(updateString);
     }
 
+    public boolean save(List<T> instance){
+        for (int i = 0;i<instance.size();i++){
+            if (!save(instance)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean delete(List<T> instance){
+        for (int i = 0;i<instance.size();i++){
+            if (!delete(instance)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean update(List<T> instance){
+        for (int i = 0;i<instance.size();i++){
+            if (!update(instance)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public T map(Map<String, Object> row) throws SQLException {
         if (row == null || row.isEmpty()) return null;
         try {

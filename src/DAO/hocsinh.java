@@ -13,8 +13,13 @@ public class hocsinh {
 	@Required()
 	private String FirstName;
 
-	@ColumnDB("ID")
-	private int ID;
+	@ColumnDB("ClassId")
+	@ForeignKey("null")
+	@Required()
+	private int ClassId;
+
+	@ColumnDB("Id")
+	private int Id;
 
 	@ColumnDB("LastName")
 	@Required()
@@ -32,9 +37,13 @@ public class hocsinh {
 
 	public void setFirstName(String value) { this.FirstName = value; }
 
-	public int setID() { return this.ID; }
+	public int setClassId() { return this.ClassId; }
 
-	public void setID(int value) { this.ID = value; }
+	public void setClassId(int value) { this.ClassId = value; }
+
+	public int setId() { return this.Id; }
+
+	public void setId(int value) { this.Id = value; }
 
 	public String setLastName() { return this.LastName; }
 

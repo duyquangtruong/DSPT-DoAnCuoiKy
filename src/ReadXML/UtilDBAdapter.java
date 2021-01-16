@@ -48,7 +48,7 @@ public class UtilDBAdapter implements UtilDBTarget {
     }
 
     private String getTextValue(Element ele, String tagName) {
-        String textVal = null;
+        String textVal = "";
         NodeList nl = ele.getElementsByTagName(tagName);
         if (nl != null && nl.getLength() > 0) {
             Element el = (Element) nl.item(0);

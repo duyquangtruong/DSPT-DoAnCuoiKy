@@ -1,28 +1,31 @@
 import Generator.GenerateClassFile;
-import SQLQuery.IQueryBuilder;
-import SQLQuery.Query;
-import SQLQuery.SQLBuilderHelper;
-import SQLQuery.element.Select;
-import SQLQuery.type.MySQL;
-import main.constants.Function;
 import main.jdbc.Configuration;
 import main.jdbc.Session;
 import main.jdbc.SessionFactory;
+import DAO.*;
 
 import java.sql.SQLException;
 import java.util.List;
 
-import DAO.first_table;
 public class main {
     public static void main(String[] args) throws SQLException {
+
+        //Tạo file
+//        Configuration configuration = new Configuration();
+//        configuration.configure();
+//        configuration.buildSessionFactory();
+//        GenerateClassFile generateClassFile = new GenerateClassFile();
+//        generateClassFile.Generate(configuration.getDbTarget());
+
+        //Query
         Configuration configuration = new Configuration();
         configuration.configure();
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.openSession();
-//        first_table object = (first_table) session.load(first_table.class,"hah");
-//        List<first_table> obs = session.loadAll(first_table.class);
-//        List<Object> obs2 = session.excuteQuery("SELECT * FROM first_table");
-//        System.out.println(obs2);
+        hocsinh object = (hocsinh) session.load(hocsinh.class,"1");
+        List<hocsinh> obs = session.loadAll(hocsinh.class);
+        List<Object> obs2 = session.excuteQuery("SELECT * FROM HOCSINH");
+        System.out.println(object.toString());
 
         /*
         IQueryBuilder queryBuilder = new MySQL();
@@ -32,7 +35,6 @@ public class main {
                 .whereEqualValue("HOTEN","Nguyen Van A")
                 .groupBy("HOCSINH","HOTEN")
                 .having("HOCSINH","HOTEN", Function.COUNT,"=","DUY")
-                .orderBy("ID");
         Query query = queryBuilder.build();
         String SQLQuery = query.toString();
         System.out.println(SQLQuery);
@@ -47,8 +49,5 @@ public class main {
         session.update(ft);
         session.close();*/
         // Generate file
-
-        GenerateClassFile generateClassFile = new GenerateClassFile();
-        generateClassFile.Generate(configuration.getDbTarget());
     }
 }

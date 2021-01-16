@@ -137,6 +137,13 @@ public class Session<T> {
     }
 
     public boolean delete(List<T> instances){
+        if (instances == null)
+        {
+            return false;
+        }
+        if (instances.isEmpty()){
+            return true;
+        }
         Table table = sessionFactory.getTable(instances.getClass());
         if (table != null){
             return table.delete(instances);
@@ -145,6 +152,13 @@ public class Session<T> {
     }
 
     public boolean update(List<T> instances){
+        if (instances == null)
+        {
+            return false;
+        }
+        if (instances.isEmpty()){
+            return true;
+        }
         Table table = sessionFactory.getTable(instances.getClass());
         if (table != null){
             return table.update(instances);
