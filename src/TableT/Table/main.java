@@ -10,6 +10,6 @@ public class main {
         configuration.configure();
         configuration.buildSessionFactory();
         Table hs = new Table(HocSinh.class);
-        System.out.println(hs.getPrimaryKey());
+        //System.out.println(hs.getPrimaryKey());
     }
 }

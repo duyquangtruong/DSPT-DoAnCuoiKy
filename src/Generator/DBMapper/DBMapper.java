@@ -34,6 +34,7 @@ public class DBMapper {
             databaseMetaData =connection.getMetaData();
 
             allTablesMetadatas = databaseMetaData.getTables(connection.getCatalog(),null,"%",new String[]{"TABLE"});
+            getAllTablesName();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -45,11 +46,11 @@ public class DBMapper {
         }
 
         AllTables = new ArrayList<String>();
-
-        while (allTablesMetadatas.next()) {
+        allTablesMetadatas.first();
+        do  {
             String tablename = allTablesMetadatas.getString("TABLE_NAME");
             AllTables.add(tablename);
-        }
+        } while (allTablesMetadatas.next());
 
         return AllTables;
     }
@@ -76,7 +77,8 @@ public class DBMapper {
         String schema = allTablesMetadatas.getString("TABLE_SCHEM");
         try (ResultSet primaryKeys = databaseMetaData.getPrimaryKeys(catalog, schema, tableName)) {
             while (primaryKeys.next()) {
-                System.out.println("Primary key: " + primaryKeys.getString("COLUMN_NAME"));
+                //System.out.println("Primary key: " + primaryKeys.getString("COLUMN_NAME"));
+                result.add(primaryKeys.getString("COLUMN_NAME"));
             }
         }
         return result;

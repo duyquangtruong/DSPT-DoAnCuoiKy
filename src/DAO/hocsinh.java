@@ -18,8 +18,9 @@ public class hocsinh {
 	@Required()
 	private int ClassId;
 
-	@ColumnDB("Id")
-	private int Id;
+	@ColumnDB("id")
+	@PrimaryKey()
+	private int id;
 
 	@ColumnDB("LastName")
 	@Required()
@@ -41,9 +42,9 @@ public class hocsinh {
 
 	public void setClassId(int value) { this.ClassId = value; }
 
-	public int setId() { return this.Id; }
+	public int setId() { return this.id; }
 
-	public void setId(int value) { this.Id = value; }
+	public void setId(int value) { this.id = value; }
 
 	public String setLastName() { return this.LastName; }
 

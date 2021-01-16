@@ -226,6 +226,7 @@ public class Table<T> {
         }
 
         Map<String,Object> params = new HashMap<String,Object>();
+        System.out.println(primaryKeyDB);
         params.put(getPrimaryKey(),id);
         String queryString = converter.queryString("*",getTableName(),params);
         try {

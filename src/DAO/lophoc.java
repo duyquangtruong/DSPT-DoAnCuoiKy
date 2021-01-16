@@ -17,8 +17,9 @@ public class lophoc {
 	@Required()
 	private String Teacher;
 
-	@ColumnDB("ClassId")
-	private int ClassId;
+	@ColumnDB("id")
+	@PrimaryKey()
+	private int id;
 
 	public int setNumberOfStudent() { return this.NumberOfStudent; }
 
@@ -32,8 +33,8 @@ public class lophoc {
 
 	public void setTeacher(String value) { this.Teacher = value; }
 
-	public int setClassId() { return this.ClassId; }
+	public int setId() { return this.id; }
 
-	public void setClassId(int value) { this.ClassId = value; }
+	public void setId(int value) { this.id = value; }
 
 }

@@ -31,11 +31,11 @@ public abstract class TableAction {
                 Field field = obj.getClass().getDeclaredField(column.getKey());
                 field.setAccessible(true);
                 Object value = field.get(obj);
-                if (value==null && column.getValue().getRequired()==true){
+                if (value == null && column.getValue().getRequired()==true){
                     return null;
                 }
                 String name = column.getValue().getColumnName();
-                String vl=value.toString();
+                String vl = value.toString();
                 if(dataTypeMapper.getClassType(column.getValue().getColumnType()).equals("String")){
                     vl = "\'"+vl+"\'";
                 }
