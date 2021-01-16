@@ -14,10 +14,10 @@ import java.util.List;
 import DAO.first_table;
 public class main {
     public static void main(String[] args) throws SQLException {
-        /*Configuration configuration = new Configuration();
+        Configuration configuration = new Configuration();
         configuration.configure();
         SessionFactory sessionFactory = configuration.buildSessionFactory();
-        Session session = sessionFactory.openSession();*/
+        Session session = sessionFactory.openSession();
 //        first_table object = (first_table) session.load(first_table.class,"hah");
 //        List<first_table> obs = session.loadAll(first_table.class);
 //        List<Object> obs2 = session.excuteQuery("SELECT * FROM first_table");
@@ -25,15 +25,16 @@ public class main {
 
         IQueryBuilder queryBuilder = new MySQL();
         queryBuilder
-                .select("ID")
-                .from("HOCSINH")
-                .whereEqualValue("HOTEN","Nguyen Van A");
+                .select("*")
+                .from("first_table")
+                .groupBy("field_2")
+                .having("field_2 > 11");
         Query query = queryBuilder.build();
-        String SQLQuery = query.toString();
-        System.out.println(SQLQuery);
+
+        List<first_table> obs = session.queryQuey(first_table.class, query);
+        System.out.println(query);
         System.out.println("select: "+ query.getSelect());
         System.out.println("from " + query.getFrom());
-
         /*
         first_table ft = new first_table();
         ft.setHah("test12");

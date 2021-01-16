@@ -34,6 +34,17 @@ public class SessionFactory {
         return null;
     }
 
+    public Table getTable(String classT){
+        for (Map.Entry<Class,Table> entry: tableMap.entrySet()
+             ) {
+            if (entry.getValue().getTableName().equals(classT)){
+                return entry.getValue();
+            }
+        }
+        return null;
+    }
+
+
     public boolean setTable(Class classT){
         Table table = new Table(classT);
         if (tableMap.containsKey(classT)){

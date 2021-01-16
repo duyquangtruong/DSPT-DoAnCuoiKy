@@ -3,6 +3,7 @@ package main.jdbc;
 import Generator.DBContext.DomainObj;
 import ReadXML.UtilDBTarget;
 import SQLQuery.IQueryBuilder;
+import SQLQuery.Query;
 import TableT.Table.Table;
 import main.IConvertToString.IConvertToString;
 
@@ -95,13 +96,6 @@ public class Session<T> {
         return null;
     }
 
-    public List<T> excuteBuilder(Class clazz, IQueryBuilder builder){
-        Table table = sessionFactory.getTable(clazz);
-        if (table != null){
-            return table.excuteBuilder(builder);
-        }
-        return null;
-    }
 
     public boolean save(T instance){
         Table table = sessionFactory.getTable(instance.getClass());
@@ -125,5 +119,23 @@ public class Session<T> {
             return table.update(instance);
         }
         return false;
+    }
+
+    public List queryQuey(Query query){
+        Table table = sessionFactory.getTable(query.getFrom());
+        if (table != null){
+            return table.excuteQuery(query);
+        }
+        conn.executeQuery(query.toString());
+        return conn.getAllRows();
+    }
+
+    public List queryQuey(Class clazz, Query query){
+        Table table = sessionFactory.getTable(clazz);
+        if (table != null){
+            return table.excuteQuery(query);
+        }
+        conn.executeQuery(query.toString());
+        return conn.getAllRows();
     }
 }

@@ -2,6 +2,7 @@ package TableT.Table;
 
 import Generator.DBContext.DBContext;
 import SQLQuery.IQueryBuilder;
+import SQLQuery.Query;
 import TableAction.DeleteAction;
 import TableAction.InsertAction;
 import TableAction.TableAction;
@@ -254,11 +255,11 @@ public class Table<T> {
         return null;
     }
 
-    public List<T> excuteBuilder(IQueryBuilder builder){
+    public List<T> excuteQuery(Query query){
         Map<String,Object> params = new HashMap<String,Object>();
         T dto = null;
         try {
-            if (connector.executeQuery(builder.toString()))
+            if (connector.executeQuery(query.toString()))
             {
                 List<T> dtos = map(connector.getAllRows());
                 return dtos;
