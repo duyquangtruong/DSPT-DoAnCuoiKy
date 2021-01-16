@@ -121,6 +121,38 @@ public class Session<T> {
         return false;
     }
 
+    public boolean save(List<T> instances){
+        if (instances == null)
+        {
+           return false;
+        }
+        if (instances.isEmpty()){
+            return true;
+        }
+        Table table = sessionFactory.getTable(instances.get(0).getClass());
+        if (instances != null){
+            return table.save(instances);
+        }
+        return false;
+    }
+
+    public boolean delete(List<T> instances){
+        Table table = sessionFactory.getTable(instances.getClass());
+        if (table != null){
+            return table.delete(instances);
+        }
+        return false;
+    }
+
+    public boolean update(List<T> instances){
+        Table table = sessionFactory.getTable(instances.getClass());
+        if (table != null){
+            return table.update(instances);
+        }
+        return false;
+    }
+
+
     public List queryQuey(Query query){
         Table table = sessionFactory.getTable(query.getFrom());
         if (table != null){

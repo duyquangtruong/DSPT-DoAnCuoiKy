@@ -230,7 +230,9 @@ public class Table<T> {
         String queryString = converter.queryString("*",getTableName(),params);
         try {
             dto = map(connector.excuteQueryRow(queryString));
-            dbContext.addRowsCache(getPrimaryValue(dto),dto);
+            if (dto!=null){
+                dbContext.addRowsCache(getPrimaryValue(dto),dto);
+            }
             return dto;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -393,7 +395,7 @@ public class Table<T> {
     }
 
     public T map(Map<String, Object> row) throws SQLException {
-        if (row == null) return null;
+        if (row == null || row.isEmpty()) return null;
         try {
             T dto = (T) tobject.getConstructor().newInstance();
             for (Map.Entry<String, Object> entity : row.entrySet()) {

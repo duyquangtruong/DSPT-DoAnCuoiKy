@@ -4,6 +4,7 @@ import SQLQuery.Query;
 import SQLQuery.SQLBuilderHelper;
 import SQLQuery.element.Select;
 import SQLQuery.type.MySQL;
+import main.constants.Function;
 import main.jdbc.Configuration;
 import main.jdbc.Session;
 import main.jdbc.SessionFactory;
@@ -18,22 +19,27 @@ public class main {
         configuration.configure();
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.openSession();
-//        first_table object = (first_table) session.load(first_table.class,"hah");
-//        List<first_table> obs = session.loadAll(first_table.class);
+        first_table object = (first_table) session.load(first_table.class,"hah");
+        List<first_table> obs = session.loadAll(first_table.class);
+        System.out.println(obs.getClass());
 //        List<Object> obs2 = session.excuteQuery("SELECT * FROM first_table");
 //        System.out.println(obs2);
 
-        IQueryBuilder queryBuilder = new MySQL();
+        IQueryBuilder queryBuilder = sessionFactory.getDbFactory().getQueryBuider();
         queryBuilder
-                .select("*")
-                .from("first_table")
+                .select()
+                .from("first_table","sec_table")
+                .whereEqualValue("testrequired","120")
+                .whereGreater("field_2",1)
                 .groupBy("field_2")
-                .having("field_2 > 11");
+                .having("count(*)",">","1");
+
         Query query = queryBuilder.build();
 
-        List<first_table> obs = session.queryQuey(first_table.class, query);
+        List<Object> obs3 = session.queryQuey( query);
+        List<Object> obs1 = session.queryQuey( query);
         System.out.println(query);
-        System.out.println("select: "+ query.getSelect());
+        System.out.println("select: "+ query.getWhere());
         System.out.println("from " + query.getFrom());
         /*
         first_table ft = new first_table();
@@ -42,6 +48,8 @@ public class main {
         ft.setTestrequired("120");
         session.update(ft);
         session.close();*/
+
+
         // Generate file
 //        Configuration configuration = new Configuration();
 //        configuration.configure();

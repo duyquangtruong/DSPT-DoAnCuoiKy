@@ -4,51 +4,46 @@ import SQLQuery.element.*;
 import SQLQuery.element.Select;
 
 public class Query {
-    private String select;
+    private Select select;
     private String where;
-    private String from;
-    private String groupBy;
-    private String having;
-    private String orderBy;
+    private GroupBy groupBy;
+    private Having having;
+    private OrderBy orderBy;
 
-    private String formattedQuery;
-
-
-    public Query(String select, String from, String where, String groupBy, String having, String orderBy,String formattedQuery) {
+    public Query(Select select, String where, GroupBy groupBy, Having having, OrderBy orderBy) {
         this.select = select;
         this.where = where;
-        this.from = from;
         this.groupBy = groupBy;
         this.having = having;
         this.orderBy = orderBy;
-        this.formattedQuery = formattedQuery;
     }
 
     @Override
     public String toString() {
-        return formattedQuery;
+        return SQLBuilderHelper._converter.queryString(select.getParamsToString(),select.getTablesToString(),where,orderBy.getParamsToString()
+        ,groupBy.getParamsToString(),having.getParamsToString());
     }
 
     public String getSelect() {
-        return select;
+        return select.getParamsToString();
     }
 
     public String getFrom() {
-        return from;
+        return select.getTablesToString();
     }
 
     public String getWhere() {
         return where;
     }
     public String getGroupBy(){
-        return groupBy;
+        return groupBy.getParamsToString();
     }
 
     public String getHaving() {
-        return having;
+        return having.getParamsToString();
     }
 
     public String getOrderBy() {
-        return orderBy;
+        return orderBy.getTablesToString();
     }
 }

@@ -11,8 +11,12 @@ public class GroupBy extends SQLBuilderHelper {
         _queryParamList.add(_converter.field(tableName, fieldName));
     }
 
+    public void addGroupBy(String fieldName){
+        _queryParamList.add( fieldName);
+    }
+
     @Override
     protected String paramToQuery() {
-        return "GROUP BY" + String.join(", ", _queryParamList);
+        return "GROUP BY " + String.join(", ", _queryParamList);
     }
 }
