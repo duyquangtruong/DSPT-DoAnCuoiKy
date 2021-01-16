@@ -24,6 +24,7 @@ public class main {
 //        List<Object> obs2 = session.excuteQuery("SELECT * FROM first_table");
 //        System.out.println(obs2);
 
+        /*
         IQueryBuilder queryBuilder = new MySQL();
         queryBuilder
                 .select("ID","HOTEN")
@@ -36,7 +37,7 @@ public class main {
         String SQLQuery = query.toString();
         System.out.println(SQLQuery);
         System.out.println("select: "+ query.getSelect());
-        System.out.println("from " + query.getFrom());
+        System.out.println("from " + query.getFrom());*/
 
         /*
         first_table ft = new first_table();
@@ -46,10 +47,8 @@ public class main {
         session.update(ft);
         session.close();*/
         // Generate file
-//        Configuration configuration = new Configuration();
-//        configuration.configure();
-//        configuration.buildSessionFactory();
-//        GenerateClassFile generateClassFile = new GenerateClassFile();
-//        generateClassFile.Generate(configuration.getDbTarget());
+
+        GenerateClassFile generateClassFile = new GenerateClassFile();
+        generateClassFile.Generate(configuration.getDbTarget());
     }
 }

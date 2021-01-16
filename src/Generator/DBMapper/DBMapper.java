@@ -34,7 +34,6 @@ public class DBMapper {
             databaseMetaData =connection.getMetaData();
 
             allTablesMetadatas = databaseMetaData.getTables(connection.getCatalog(),null,"%",new String[]{"TABLE"});
-            getAllTablesName();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -47,25 +46,11 @@ public class DBMapper {
 
         AllTables = new ArrayList<String>();
 
-        Statement st = connection.createStatement();
-        ResultSet rs = null;
         while (allTablesMetadatas.next()) {
             String tablename = allTablesMetadatas.getString("TABLE_NAME");
-            //System.out.println("Table name: "+tablename);
             AllTables.add(tablename);
-//            String sql = "select * from "+tablename;
-//            rs = st.executeQuery(sql);
-//            ResultSetMetaData metaData = rs.getMetaData();
-//
-//            int rowCount = metaData.getColumnCount();
-//            System.out.println("Field  \tDataType");
-//
-//            for (int i = 0; i < rowCount; i++) {
-//                System.out.print(metaData.getColumnName(i + 1) + "  \t");
-//                System.out.println(metaData.getColumnTypeName(i + 1));
-//            }
         }
-        AllTables.forEach(s -> System.out.println(s));
+
         return AllTables;
     }
 

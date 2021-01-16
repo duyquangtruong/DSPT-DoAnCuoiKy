@@ -36,7 +36,7 @@ public class GenerateClassFile {
     }
 
     public void Generate(UtilDBTarget utilDBTarget) throws SQLException {
-        UtilDBTarget config = utilDBTarget; //"src/ReadXML/DBConfig.xml"
+        UtilDBTarget config = utilDBTarget;
         UtilDB configInfo = config.getUtil();
 
         Session session = Session.getSession();
