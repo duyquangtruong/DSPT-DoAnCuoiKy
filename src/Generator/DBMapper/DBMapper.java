@@ -11,6 +11,7 @@ public class DBMapper {
 
     public static final String COL_DESC_PK_NAME = "PK_NAME";
     public static final String COL_DESC_FKCOLUMN_NAME = "FKCOLUMN_NAME";
+    public static final String COL_DESC_FK_NAME = "FK_NAME";
     public static final String COL_DESC_PKTABLE_NAME = "PKTABLE_NAME";
     public static final String COL_DESC_PKCOLUMN_NAME = "PKCOLUMN_NAME";
     public static final String COL_DESC_COLUMN_NAME = "COLUMN_NAME";
@@ -89,7 +90,7 @@ public class DBMapper {
             return null;
         }
 
-        ResultSet resultSet = databaseMetaData.getImportedKeys(null,null,tableName);
+        ResultSet resultSet = connection.getMetaData().getImportedKeys(null, null,tableName);
         List<String> result = new ArrayList<String>();
 
         while(resultSet.next()){
@@ -109,11 +110,11 @@ public class DBMapper {
             return null;
         }
 
-        ResultSet resultSet = databaseMetaData.getImportedKeys(null,null,tableName);
+        ResultSet resultSet = connection.getMetaData().getImportedKeys(null,null,tableName);
         HashMap<String,String> result = new HashMap<String,String>();
 
         while(resultSet.next()){
-            if(resultSet.getString(COL_DESC_FKCOLUMN_NAME) == foreignKey)
+            if(resultSet.getString(COL_DESC_FKCOLUMN_NAME).equals(foreignKey))
             {
                 result.put(FOREIGN_INFO_KEY_TABLE,resultSet.getString(COL_DESC_PKTABLE_NAME));
                 result.put(FOREIGN_INFO_KEY_COLUMN,resultSet.getString(COL_DESC_PKCOLUMN_NAME));

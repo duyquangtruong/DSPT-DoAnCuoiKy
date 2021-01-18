@@ -19,7 +19,7 @@ import static Generator.DBMapper.DBMapper.FOREIGN_INFO_KEY_TABLE;
 
 public class Writer {
 
-    public static final String REQUIRED_YES = "YES";
+    public static final String REQUIRED_YES = "NO";
     public static final String srcOutput = System.getProperty("user.dir")+"\\src\\DAO";
 
     public static void writeClass(String className, DBMapper mapper){
@@ -76,7 +76,7 @@ public class Writer {
                 String firstLetterCapitalize = standardName.substring(0, 1).toUpperCase() + standardName.substring(1);
                 String attrType = dataTypeMapper.getClassType(attributes.get(attributeName));
 
-                classFile.write(String.format("\tpublic %s set%s() { return this.%s; }\n\n"
+                classFile.write(String.format("\tpublic %s get%s() { return this.%s; }\n\n"
                         ,attrType,firstLetterCapitalize, standardName));
 
                 classFile.write(String.format("\tpublic void set%s(%s value) { this.%s = value; }\n\n"

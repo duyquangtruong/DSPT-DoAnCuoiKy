@@ -26,20 +26,21 @@ public class main {
         SessionFactory sessionFactory = configuration.buildSessionFactory();
         Session session = sessionFactory.openSession();
 
-        //Query normal
-//        hocsinh obj = (hocsinh) session.load(hocsinh.class,"1");
+//        //Query normal
+//        hocsinh obj = (hocsinh) session.load(hocsinh.class,"H002");
+//        System.out.println(String.format("classId: %s \n FirstName: %s",obj.getClassId(),obj.getFirstName()));
+//
 //        List<hocsinh> obs = session.loadAll(hocsinh.class);
 //        List<Object> obs2 = session.excuteQuery("SELECT * FROM hocsinh");
 
 //        hocsinh hocSinh = new hocsinh();
-//        hocSinh.setId(5);
-//        hocSinh.setFirstName("Hoan");
-//        hocSinh.setLastName("Ly");
-//        hocSinh.setClassId(1);
-//        hocSinh.setAddress("1111");
-//        hocSinh.setCity("HCM");
-
-        //Save or create
+//        hocSinh.setId("H009");
+//        hocSinh.setFirstName("Demo");
+//        hocSinh.setClassId("C003");
+//        hocSinh.setLastName("Name");
+//        hocSinh.setCity("Da Nang");
+//
+//        //Save or create
 //        session.save(hocSinh);
 
         //Update
@@ -51,10 +52,10 @@ public class main {
         queryBuilder
                 .select()
                 .from("hocsinh")
-                .whereEqualValue("Firstname","Duy");
+                .whereEqualValue("Firstname","Demo");
         Query query = queryBuilder.build();
         List<hocsinh> hocsinhs = session.queryQuey(hocsinh.class,query);
-//        System.out.println("aaa");
+
 
     }
 }
